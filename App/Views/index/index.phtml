@@ -1,0 +1,51 @@
+
+    <div class="container">    
+      <div class="row">
+
+        <div class="card-login">
+          <div class="card">
+            <div class="card-header">
+              Login
+            </div>
+            <div class="card-body"> <!-- caminho relativo embaixo -->
+              <form action="/autenticar" method="post"> <!-- ação que encaminha os dados para a parte do servidor -->
+                <div class="form-group"> <!-- method post: usado para deixar menos vunerável os dados do cliente, ao contrário do metodo get(que é o padrão) -->
+                  <input name="email" type="email" class="form-control" placeholder="E-mail">
+                </div> <!-- por meio do name, o servidor transforma as informações passadas em parâmetros para a page do servidor php (aparece na url de início) -->
+                <div class="form-group">
+                  <input name="senha" type="password" class="form-control" placeholder="Senha">
+                </div>
+                <? if($this->view->login == 'erro') { ?>
+                  <div class="row">
+                    <div class="col">
+                      <span class="text text-danger">Email e/ou senha inválido(s)!</span>
+                    </div>
+                  </div>
+			          <? } ?>
+                <? 
+                  // fazendo novo teste: se erro2(ou seja, as páginas protegidas forem buscadas sem ter o acesso autenticado) ocorrer, chama essa página com essa mensagem
+                  if(isset($_GET['login']) && $_GET['login'] == 'erro2'){ // verifica se o índice estã setado(ativo)
+
+                ?>
+
+                <div class="text-danger pb-3">
+                  Autentifique a permissão antes de tentar acessar essa página protegida
+                </div>
+
+                <? } ?> 
+
+                <button class="btn btn-lg btn-info btn-block mb-3" type="submit">Entrar</button>
+                <a class="text-center text-info d-flex justify-content-center" href="/inscreverse">Não possui cadastro? Click Aqui.</a>
+              </form>
+              <style>
+                .card-login {
+                  padding: 30px 0 0 0;
+                  width: 350px;
+                  margin: 0 auto;
+                }
+              </style>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
