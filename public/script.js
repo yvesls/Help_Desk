@@ -27,6 +27,65 @@ $(document).ready(() => {
         $('.popoverClass').remove();
     });
 
+$('.clienteAtual').css('display', 'none'); // esconde a aba do cliente atual
+$('.categoriaAtual').css('display', 'none');
 
+    $('#nome').on('change', (e)=> {
+        let cliente = $(e.target).val();
+        $('.peloNome').remove();       
+
+        $.ajax({ // realiza uma requisição para o servidor
+            // busca no servidor por via get
+            type: 'POST', 
+            // url da página que interage com o servidor
+            url: '/consultar_cliente_adm',
+            // envia os dados que serão parametros para busca no servidor (neste caso a data)
+            data: 'nome=' + cliente, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+            dataType: 'json',// modifica o tipo de retorno (padrao html)
+            success: dados => {
+                // retorna os dados objtidos a partir do parametro enviado  
+                if(cliente != 'Clientes') {
+                    $('.todosClientes').css('display', 'none'); 
+                    $('.clienteAtual').css('display', 'block');
+                    $('.categoriaAtual').css('display', 'none');
+
+                    $('#categoria').val('Categorias');
+
+                    if(dados == ""){
+                            $('.clienteAtual').prepend('<div class="pt-5 d-flex peloNome align-content-center justify-content-center"><h2>Este cliente não possui pedidos.</h2></h2></div>')
+                    }
+
+                    dados.forEach(element => {
+                        $('.clienteAtual').prepend('<div class="card mb-3 bg-light peloNome"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p></div></div></div>');
+                    });
+                }else {
+                    $('.todosClientes').css('display', 'block');
+                    $('.clienteAtual').css('display', 'none');
+                    $('.categoriaAtual').css('display', 'none');
+                }
+                
+            }, // mostra os dados de erro do back
+            error: function ( status, error)  {
+                alert('Deu erro na recuperação dos dados');
+                console.log(arguments);
+                console.log(status);
+                console.log(error.message);
+            }
+        });      
+        // metodo, url, dados, sucesso, erro, etc (ele realiza. Informações basicas)
+    });
+
+    $('#categoria').on('change', (e)=> {
+        let categoria = $(e.target).val();
+        if(categoria != 'Categorias') {
+            $('#nome').val('Clientes');
+            $('.categoriaAtual').css('display', 'block');
+            $('.todosClientes').css('display', 'none');
+            $('.clienteAtual').css('display', 'none');
+        }else {
+            $('.categoriaAtual').css('display', 'none');
+            $('.todosClientes').css('display', 'block');
+        }
+    });
 
 });

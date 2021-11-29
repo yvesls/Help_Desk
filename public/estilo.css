@@ -11,3 +11,11 @@
     color: black;
     border-radius: 5px;
 }
+
+.relative-name-adm {
+    top: 2px;
+}
+
+.relative-card-adm {
+    top: -20px;
+}

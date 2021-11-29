@@ -11,6 +11,7 @@ class Chamado extends Model {
 	private $categoria;
 	private $titulo;
 	private $descricao;
+	private $dados;
 
     // modelos de set e get
 	public function __get($atributo) {
@@ -56,11 +57,17 @@ class Chamado extends Model {
 		return $this->db->query($query)->fetchAll();
 	}
 
-    public function setNome(){
+	public function getChamadosAdmPorNome($cliente){
+		$usuario = $this; 
+		$usuario->__set('nome', $cliente);
 
+		$query = "select categoria, titulo, descricao from tb_chamados where nome = :nome";
+		$stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome', $this->__get('nome'));
+        $stmt->execute();
 
-
-    }
+		return $stmt->fetchAll(\PDO::FETCH_OBJ);
+	}
 }
 
 ?>

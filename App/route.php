@@ -68,6 +68,12 @@
                 'controller' => 'AppController',
                 'action' => 'consultar_chamado_adm'
             );
+
+            $routes['consultar_cliente_adm'] = array(
+                'route' => '/consultar_cliente_adm',
+                'controller' => 'AppController',
+                'action' => 'consultar_cliente_adm'
+            );
     
             $routes['sair'] = array(
                 'route' => '/sair',

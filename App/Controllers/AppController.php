@@ -72,7 +72,25 @@ class AppController extends Action {
 		// echo '</pre>';
 		$this->view->dadosChamado = $dados;
 		
+		$conexaoClientes = Container::getModel('Usuario');
+
+		$clientes = $conexaoClientes->getClientes();
+
+		$this->view->clientes = $clientes;
+
 		$this->render('consultar_chamado_adm', 'layout1');
+	}
+	
+	public function consultar_cliente_adm(){
+
+		$conexaoChamado = Container::getModel('Chamado');
+		$conexaoChamado->__set('nome', $_POST['nome']);
+		$dados = $conexaoChamado->getChamadosAdmPorNome($_POST['nome']);
+		$this->view->nomes = $dados;
+		$conexaoChamado->__set('dados', $dados);
+		$array = json_decode(json_encode($dados), true);
+		
+		echo json_encode($dados);
 	}
 }
 ?>

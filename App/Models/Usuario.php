@@ -64,6 +64,12 @@ class Usuario extends Model {
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC); // retorna o resultado da consulta (array associativo)
 	}
 
+	public function getClientes(){
+		$query = "select nome from usuarios where nome != 'administrador'";
+
+		return $this->db->query($query)->fetchAll();
+	}
+
 	// método que verifica se existe o login passado na index
 	public function autenticar() {
 
