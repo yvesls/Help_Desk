@@ -74,12 +74,6 @@
                 'controller' => 'AppController',
                 'action' => 'consultar_cliente_adm'
             );
-
-            $routes['consultar_categoria_adm'] = array(
-                'route' => '/consultar_categoria_adm',
-                'controller' => 'AppController',
-                'action' => 'consultar_categoria_adm'
-            );
     
             $routes['sair'] = array(
                 'route' => '/sair',
