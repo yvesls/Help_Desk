@@ -68,6 +68,18 @@ class Chamado extends Model {
 
 		return $stmt->fetchAll(\PDO::FETCH_OBJ);
 	}
+
+	public function getChamadosAdmPorCategoria($categoria){
+		$usuario = $this; 
+		$usuario->__set('categoria', $categoria);
+
+		$query = "select categoria, titulo, descricao from tb_chamados where categoria = :categoria";
+		$stmt = $this->db->prepare($query);
+        $stmt->bindValue(':categoria', $this->__get('categoria'));
+        $stmt->execute();
+
+		return $stmt->fetchAll(\PDO::FETCH_OBJ);
+	}
 }
 
 ?>

@@ -20,9 +20,9 @@
               </select>
             </div>
             <div class="card-body">
-              <div class="todosClientes">
+              <div class="todosClientes position-relative">
                 <?php foreach($this->view->dadosChamado as $key=>$dados){ ?>
-                <div class="card mb-3 bg-light">
+                <div class="card mb-3 bg-light position-relative animate__animated animate__fadeIn animate_duracao">
                   <div class="card-body">
                       <p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm"><?= $dados['nome'] ?></p>
                       <div class="float-left pt-0 mt-0 position-relative relative-card-adm">
@@ -38,7 +38,7 @@
 
               </span>
               <span class="categoriaAtual">
-                  <h1>Lista de acordo com a categoria</h1>
+                
               </span>
                 <div class="row mt-5">
                   <div class="col-6">

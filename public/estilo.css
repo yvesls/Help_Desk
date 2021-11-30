@@ -19,3 +19,7 @@
 .relative-card-adm {
     top: -20px;
 }
+
+.animate_duracao {
+    --animate-duration: 1s;
+}
