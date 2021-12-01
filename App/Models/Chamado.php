@@ -7,10 +7,12 @@ use MF\Model\Model; // padrão dos models(precisam extender de model)
 class Chamado extends Model {
     
     // atributos que representam as colunas de registros do banco de dados
+	private $id;
 	private $nome;
 	private $categoria;
 	private $titulo;
 	private $descricao;
+	private $status;
 	private $dados;
 
     // modelos de set e get
@@ -25,12 +27,13 @@ class Chamado extends Model {
 	//salvar (lógica responsável pela armazenamento dos dados)
 	public function salvar_chamado() {
 
-		$query = "insert into tb_chamados(nome, categoria, titulo, descricao)values(:nome, :categoria, :titulo, :descricao)"; //  preenchendo nome email e senha
+		$query = "insert into tb_chamados(nome, categoria, titulo, descricao, status)values(:nome, :categoria, :titulo, :descricao, :status)"; //  preenchendo nome email e senha
 		$stmt = $this->db->prepare($query); // instanciando o pbo
 		$stmt->bindValue(':nome', $this->__get('nome')); // bind (parte da inserção) substitui o atributo nome pelo get do nome passado
 		$stmt->bindValue(':categoria', $this->__get('categoria'));
 		$stmt->bindValue(':titulo', $this->__get('titulo')); //md5() -> hash 32 caracteres (criptografia da senha)
 		$stmt->bindValue(':descricao', $this->__get('descricao'));
+		$stmt->bindValue(':status', 'pendente');
         $stmt->execute(); // executa o pdo stmt
 
 		return $this;
@@ -52,7 +55,7 @@ class Chamado extends Model {
     }
 
 	public function getChamadosAdm(){
-		$query = "select categoria, titulo, descricao, nome from tb_chamados";
+		$query = "select categoria, titulo, descricao, nome, id from tb_chamados";
 
 		return $this->db->query($query)->fetchAll();
 	}
@@ -73,7 +76,7 @@ class Chamado extends Model {
 		$usuario = $this; 
 		$usuario->__set('categoria', $categoria);
 
-		$query = "select categoria, titulo, descricao from tb_chamados where categoria = :categoria";
+		$query = "select categoria, titulo, descricao, nome from tb_chamados where categoria = :categoria";
 		$stmt = $this->db->prepare($query);
         $stmt->bindValue(':categoria', $this->__get('categoria'));
         $stmt->execute();

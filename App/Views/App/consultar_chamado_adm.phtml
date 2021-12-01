@@ -23,12 +23,18 @@
               <div class="todosClientes position-relative">
                 <?php foreach($this->view->dadosChamado as $key=>$dados){ ?>
                   <div class="card mb-3 bg-light position-relative animate__animated animate__fadeIn animate_duracao">
-                    <div class="card-body">
+                    <div class="card-body pb-0 m-0">
                         <p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm"><?= $dados['nome'] ?></p>
-                        <div class="float-left pt-0 mt-0 position-relative relative-card-adm">
+                        <div class="float-left position-relative relative-card-adm col-12">
                             <h5 class="card-title"><?= $dados['titulo'] ?></h5>
                             <h6 class="card-subtitle mb-2 text-muted"><?= $dados['categoria'] ?></h6>
                             <p class="card-text"><?= $dados['descricao'] ?></p>
+                            <form>
+                              <div class="form-check m-0 p-0">
+                                <label class="status-font" for="status">Marcar como concluído:</label><br>
+                                <button type="button" value="realizado<?= $dados['id'] ?>" name="status" class="status btn btn-info btn-sm">confirmar</button>
+                              </div>
+                            </form>                           
                         </div>     
                     </div>
                   </div>

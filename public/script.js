@@ -99,7 +99,7 @@ $('.categoriaAtual').css('display', 'none');
                     }
 
                     dados.forEach(element => {
-                        $('.categoriaAtual').prepend('<div class="card mb-3 bg-light pelaCategoria  position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p></div></div></div>');
+                        $('.categoriaAtual').prepend('<div class="card mb-3 bg-light pelaCategoria  position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm">' + element.nome + '</p><div class="float-left pt-0 mt-0 position-relative relative-card-adm col-12"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p></div></div></div>');
                     });
                 }else {
                     $('.categoriaAtual').css('display', 'none');
@@ -114,6 +114,24 @@ $('.categoriaAtual').css('display', 'none');
                 console.log(error.message);
             }
         }); 
+    });
+
+    $(".status").on("click", (e)=>{
+        e.preventDefault(); // impedir o evento submit
+        
+        let status_inteiro = $(e.target).val();
+        let id = status_inteiro.slice(9); // recuperando id passado junto com status
+        let status = status_inteiro.slice(0,9) // recortando apenas a parte do status (por ter tamanho unico, slice funciona)
+        console.log(status);
+        console.log(id);
+        let bloco = $(e.target).closest('.card');
+        console.log(bloco)
+        $(bloco).addClass('animate__fadeOut');
+        window.setTimeout(realizaAnimacao, 1000);
+        function realizaAnimacao(){
+            $(bloco).css('display', 'none');
+        }
+        // proximo passo: implementar ajax para envio dos dados para seu tratamento adequado
     });
 
 });

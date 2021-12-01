@@ -23,3 +23,15 @@
 .animate_duracao {
     --animate-duration: 1s;
 }
+
+.hover-status:hover {
+    cursor: pointer;
+}
+
+.status-position {
+    top: 2px;
+}
+
+.status-font {
+    font-size: 0.9em;
+}
