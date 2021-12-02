@@ -90,6 +90,7 @@ class AppController extends Action {
 		// echo '</pre>';
 		$this->view->dadosChamado = $dados;
 		
+		// resgata os nomes na busca por nomes
 		$conexaoClientes = Container::getModel('Usuario');
 
 		$clientes = $conexaoClientes->getClientes();
@@ -97,6 +98,16 @@ class AppController extends Action {
 		$this->view->clientes = $clientes;
 
 		$this->render('consultar_chamado_adm', 'layout1');
+	}
+
+	public function consultar_chamados_realizados_adm(){
+		
+		$conexaoChamado = Container::getModel('Chamado');
+		
+		$dados = $conexaoChamado->getChamadosRealizadosAdm();
+		$this->view->dadosChamado = $dados;
+
+		$this->render('consultar_chamados_realizados_adm', 'layout1');
 	}
 	
 	public function consultar_cliente_adm(){
@@ -117,6 +128,13 @@ class AppController extends Action {
 		$array = json_decode(json_encode($dados), true);
 		
 		echo json_encode($dados);
+	}
+
+	public function alterar_status_adm(){
+
+		$conexaoChamado = Container::getModel('Chamado');
+		$conexaoChamado->__set('id', $_POST['id']);
+		$conexaoChamado->set_novo_status();
 	}
 }
 ?>

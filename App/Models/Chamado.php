@@ -39,13 +39,25 @@ class Chamado extends Model {
 		return $this;
 	}
 
+	public function set_novo_status() {
+
+		$query = "update tb_chamados set status = :status where id = :id "; //  preenchendo nome email e senha
+		$stmt = $this->db->prepare($query); // instanciando o pbo
+		$stmt->bindValue(':status', 'realizado'); 
+		$stmt->bindValue(':id', $this->__get('id')); 
+
+		$stmt->execute(); // executa o pdo stmt
+
+		return $this;
+	}
+
     public function getChamados(){
         session_start();
 
 		$usuario = $this; 
 		$usuario->__set('nome', $_SESSION['nome']); // resgatando o usuário para assim buscar pelo nome os dados dele
 
-        $query = "select categoria, titulo, descricao from tb_chamados where nome = :nome";
+        $query = "select categoria, titulo, descricao, status from tb_chamados where nome = :nome";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome',  $this->__get('nome'));
         $stmt->execute();
@@ -55,7 +67,15 @@ class Chamado extends Model {
     }
 
 	public function getChamadosAdm(){
-		$query = "select categoria, titulo, descricao, nome, id from tb_chamados";
+
+		$query = "select categoria, titulo, descricao, nome, id from tb_chamados where status = 'pendente'";
+
+		return $this->db->query($query)->fetchAll();
+	}
+
+	public function getChamadosRealizadosAdm(){
+
+		$query = "select categoria, titulo, descricao, nome, id from tb_chamados where status = 'realizado'";
 
 		return $this->db->query($query)->fetchAll();
 	}
@@ -64,7 +84,7 @@ class Chamado extends Model {
 		$usuario = $this; 
 		$usuario->__set('nome', $cliente);
 
-		$query = "select categoria, titulo, descricao from tb_chamados where nome = :nome";
+		$query = "select categoria, titulo, descricao from tb_chamados where nome = :nome and status = 'pendente'";
 		$stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', $this->__get('nome'));
         $stmt->execute();
@@ -76,7 +96,7 @@ class Chamado extends Model {
 		$usuario = $this; 
 		$usuario->__set('categoria', $categoria);
 
-		$query = "select categoria, titulo, descricao, nome from tb_chamados where categoria = :categoria";
+		$query = "select categoria, titulo, descricao, nome from tb_chamados where categoria = :categoria and status = 'pendente'";
 		$stmt = $this->db->prepare($query);
         $stmt->bindValue(':categoria', $this->__get('categoria'));
         $stmt->execute();

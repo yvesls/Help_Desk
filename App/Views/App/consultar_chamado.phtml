@@ -12,6 +12,11 @@
                   <h5 class="card-title"><?= $dados['titulo'] ?></h5>
                   <h6 class="card-subtitle mb-2 text-muted"><?= $dados['categoria'] ?></h6>
                   <p class="card-text"><?= $dados['descricao'] ?></p>
+                  <? if($dados['status'] == 'realizado') { ?>
+                    <small class="card-text text-success"><?= $dados['status'] ?></small>
+                  <? } else {?>
+                    <small class="card-text text-danger"><?= $dados['status'] ?></small>
+                  <? } ?>
                 </div>
               </div>
               <? } ?>

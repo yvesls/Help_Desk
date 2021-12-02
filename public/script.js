@@ -122,16 +122,37 @@ $('.categoriaAtual').css('display', 'none');
         let status_inteiro = $(e.target).val();
         let id = status_inteiro.slice(9); // recuperando id passado junto com status
         let status = status_inteiro.slice(0,9) // recortando apenas a parte do status (por ter tamanho unico, slice funciona)
-        console.log(status);
-        console.log(id);
+        
         let bloco = $(e.target).closest('.card');
+
         console.log(bloco)
-        $(bloco).addClass('animate__fadeOut');
-        window.setTimeout(realizaAnimacao, 1000);
-        function realizaAnimacao(){
-            $(bloco).css('display', 'none');
-        }
-        // proximo passo: implementar ajax para envio dos dados para seu tratamento adequado
+        
+        $.ajax({ // realiza uma requisição para o servidor
+            // busca no servidor por via get
+            type: 'POST', 
+            // url da página que interage com o servidor
+            url: '/alterar_status_adm',
+            // envia os dados que serão parametros para busca no servidor (neste caso a data)
+            data: 'id=' + id, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+            dataType: 'text',// modifica o tipo de retorno (padrao html)
+            success: dados => {
+                // se for sucesso ele remove a tag
+                $(bloco).addClass('animate__fadeOut');
+
+                window.setTimeout(realizaAnimacao, 1000);
+                function realizaAnimacao(){
+                    $(bloco).remove(); // ao invés de display none, usar remove()
+                }
+                console.log(dados);
+            }, // mostra os dados de erro do back
+            error: function ( status, error)  {
+                alert('Deu erro na recuperação dos dados');
+                console.log(arguments);
+                console.log(status);
+                console.log(error.message);
+            }
+        }); 
+
     });
 
 });

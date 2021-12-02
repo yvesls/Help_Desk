@@ -80,7 +80,19 @@
                 'controller' => 'AppController',
                 'action' => 'consultar_categoria_adm'
             );
-    
+
+            $routes['alterar_status_adm'] = array(
+                'route' => '/alterar_status_adm',
+                'controller' => 'AppController',
+                'action' => 'alterar_status_adm'
+            );
+
+            $routes['consultar_chamados_realizados_adm'] = array(
+                'route' => '/consultar_chamados_realizados_adm',
+                'controller' => 'AppController',
+                'action' => 'consultar_chamados_realizados_adm'
+            );
+
             $routes['sair'] = array(
                 'route' => '/sair',
                 'controller' => 'AuthController',
