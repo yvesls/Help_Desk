@@ -7,6 +7,7 @@
             <div class="card-body p-0">
               <div class="todosClientes mt-md-5 mt-2 position-relative animate__animated animate__fadeIn animate_duracao d-flex justify-content-around align-content-around flex-wrap p-0">
                 <?php foreach($this->view->dadosChamado as $key=>$dados){ ?>
+                  
                   <div class="card col-md-5 col-11 bg-light position-relative mb-md-5 mb-2">
                     <div class="card-body pb-0 m-0">
                         
@@ -16,7 +17,7 @@
                             <p class="card-text"><?= $dados['descricao'] ?></p>                        
                         </div>
                     </div>                        
-                    <p class="card-subtitle mt-3 font-italic position-relative pos-adm-name-realizado p-0 m-0"><?= $dados['nome'] ?></p>     
+                    <p class="card-subtitle mt-3 font-italic position-relative pos-adm-name-realizado p-0 m-0 col-10"><?= $dados['nome'] ?><small class="font-italic float-right text-dark mr-0 pr-0"><?= $dados['data_mod'] ?></small></p>     
                   </div>
                 <? } ?>
               </div>

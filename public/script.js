@@ -51,11 +51,11 @@ $('.categoriaAtual').css('display', 'none');
                     $('#categoria').val('Categorias');
 
                     if(dados == ""){
-                        $('.clienteAtual').prepend('<div class="pt-5 d-flex peloNome align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Este cliente não possui pedidos.</h2></h2></div>')
+                        $('.clienteAtual').prepend('<div class="pt-5 d-flex peloNome align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Este cliente não possui pedidos.</h2></div>')
                     }
 
                     dados.forEach(element => {
-                        $('.clienteAtual').prepend('<div class="card mb-3 bg-light peloNome position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p></div></div></div>');
+                        $('.clienteAtual').prepend('<div class="card mb-3 bg-light peloNome position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
                     });
                 }else {
                     $('.todosClientes').css('display', 'block');
@@ -95,12 +95,53 @@ $('.categoriaAtual').css('display', 'none');
                     $('.clienteAtual').css('display', 'none');
 
                     if(dados == ""){
-                            $('.categoriaAtual').prepend('<div class="pt-5 d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Esta categoria não possui pedidos.</h2></h2></div>')
+                        $('.categoriaAtual').prepend('<div class="pt-5 d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Esta categoria não possui pedidos.</h2></div>')
                     }
 
                     dados.forEach(element => {
-                        $('.categoriaAtual').prepend('<div class="card mb-3 bg-light pelaCategoria  position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm">' + element.nome + '</p><div class="float-left pt-0 mt-0 position-relative relative-card-adm col-12"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p></div></div></div>');
+                        $('.categoriaAtual').prepend('<div class="card mb-3 bg-light pelaCategoria  position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm">' + element.nome + '</p><div class="float-left pt-0 mt-0 position-relative relative-card-adm col-12"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
+                        var ids = [];
+                        ids = element.id;
+                        console.log(ids);
+                        $(".status").on("click", (e)=>{
+                            e.preventDefault(); // impedir o evento submit
+                            
+                            let status_inteiro = $(e.target).val();
+                            let id = status_inteiro.slice(9); // recuperando id passado junto com status
+                            let status = status_inteiro.slice(0,9) // recortando apenas a parte do status (por ter tamanho unico, slice funciona)
+                            
+                            let bloco = $(e.target).closest('.card');
+                    
+                            console.log(bloco)
+                            
+                            $.ajax({ // realiza uma requisição para o servidor
+                                // busca no servidor por via get
+                                type: 'POST', 
+                                // url da página que interage com o servidor
+                                url: '/alterar_status_adm',
+                                // envia os dados que serão parametros para busca no servidor (neste caso a data)
+                                data: 'id=' + id, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+                                dataType: 'text',// modifica o tipo de retorno (padrao html)
+                                success: dados => {
+                                    // se for sucesso ele remove a tag
+                                    $(bloco).addClass('animate__fadeOut');
+                    
+                                    window.setTimeout(realizaAnimacao, 1000);
+                                    function realizaAnimacao(){
+                                        $(bloco).remove(); // ao invés de display none, usar remove()
+                                    }
+                                    console.log(dados);
+                                }, // mostra os dados de erro do back
+                                error: function ( status, error)  {
+                                    alert('Deu erro na recuperação dos dados');
+                                    console.log(arguments);
+                                    console.log(status);
+                                    console.log(error.message);
+                                }
+                            }); 
+                        });
                     });
+                    
                 }else {
                     $('.categoriaAtual').css('display', 'none');
                     $('.todosClientes').css('display', 'block');
@@ -115,7 +156,7 @@ $('.categoriaAtual').css('display', 'none');
             }
         }); 
     });
-
+    
     $(".status").on("click", (e)=>{
         e.preventDefault(); // impedir o evento submit
         

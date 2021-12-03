@@ -6,19 +6,30 @@
             </div>
             
             <div class="card-body">
-              <?php foreach($this->view->dadosChamado as $key=>$dados){ ?>
+              <?php $possui_dados_ainda = 0; foreach($this->view->dadosChamado as $key=>$dados){ 
+                      if($dados['status'] != ''){
+                          $possui_dados_ainda += 1;
+                      }
+                  }
+              ?>
+              <?php if($possui_dados_ainda != 0){ foreach($this->view->dadosChamado as $key=>$dados){ ?>
               <div class="card mb-3 bg-light position-relative animate__animated animate__fadeIn animate_duracao">
                 <div class="card-body">
                   <h5 class="card-title"><?= $dados['titulo'] ?></h5>
                   <h6 class="card-subtitle mb-2 text-muted"><?= $dados['categoria'] ?></h6>
                   <p class="card-text"><?= $dados['descricao'] ?></p>
                   <? if($dados['status'] == 'realizado') { ?>
-                    <small class="card-text text-success"><?= $dados['status'] ?></small>
+                    <small class="ml-0 pl-0 card-text text-success col-12"><?= $dados['status'] ?><small class="font-italic float-right text-dark mr-0 pr-0"><?= $dados['data_mod'] ?></small></small>
                   <? } else {?>
-                    <small class="card-text text-danger"><?= $dados['status'] ?></small>
+                    <small class="ml-0 pl-0 card-text text-danger col-12"><?= $dados['status'] ?><small class="font-italic float-right text-dark mr-0 pr-0"><?= $dados['data_mod'] ?></small></small>
                   <? } ?>
                 </div>
               </div>
+              <? } ?>
+              <? }else{ ?>
+                <div class="py-5 text-center d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao">
+                  <h2>Você não realizou pedidos ainda.</h2>
+                </div>
               <? } ?>
               <div class="row mt-5">
                 <div class="col-6">

@@ -21,7 +21,13 @@
             </div>
             <div class="card-body">
               <div class="todosClientes position-relative">
-                <?php foreach($this->view->dadosChamado as $key=>$dados){ ?>
+                <?php $possui_dados_ainda = 0; foreach($this->view->dadosChamado as $key=>$dados){ 
+                          if($dados['status'] == 'pendente'){
+                              $possui_dados_ainda += 1;
+                          }
+                      }
+                ?>
+                <?php if($possui_dados_ainda != 0){ foreach($this->view->dadosChamado as $key=>$dados){ ?>
                   <div class="card mb-3 bg-light position-relative animate__animated animate__fadeIn animate_duracao">
                     <div class="card-body pb-0 m-0">
                         <p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm"><?= $dados['nome'] ?></p>
@@ -32,13 +38,19 @@
                             <form>
                               <div class="form-check m-0 p-0">
                                 <label class="status-font" for="status">Marcar como concluído:</label><br>
-                                <button type="button" value="realizado<?= $dados['id'] ?>" name="status" class="status btn btn-info btn-sm">confirmar</button>
+                                <span><button type="button" value="realizado<?= $dados['id'] ?>" name="status" class="status btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0"><?= $dados['data_mod'] ?></small></span>
                               </div>
                             </form>                           
                         </div>     
                     </div>
                   </div>
-                <? } ?>
+                  <? }
+                  }else{ ?>
+                    <div class="py-5 text-center d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao">
+                      <h2>Nenhum cliente possui pedidos no momento.</h2>
+                    </div>
+                   
+                  <? } ?>
               </div>
               <span class="clienteAtual">
 
@@ -58,5 +70,3 @@
           </div>
         </div>
   </div>
-
-  
