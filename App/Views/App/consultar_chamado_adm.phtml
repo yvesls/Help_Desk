@@ -63,10 +63,35 @@
                     <a class="btn btn-lg btn-warning btn-block" href="/home">Voltar</a>
                   </div>
                   <div class="col-6">
-                  <a class="btn btn-lg btn-info btn-block" href="/consultar_chamados_realizados_adm">Chamados concluidos</a>
-                </div>
+                    <a class="btn btn-lg btn-info btn-block" href="/consultar_chamados_realizados_adm">Chamados concluidos</a>
+                  </div>
                 </div>
             </div> 
+          </div>
+        </div>
+        <div class="col-3 comunicacao">
+          <button class="col-1 btn btn-info btn-chat">Chat</button>
+          
+          <div class="chat bg-light rounded">
+            <div class="bg-light text-center menu-chat">
+              <small class="text-info">Chat</small>
+              <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
+            </div>
+            
+            <?php foreach($this->view->clientes as $key=>$dados){ ?>
+              <div class=" text-center p-0 m-0 chat-clientes">
+                <input type="button" class="col-12 m-0 py-3 nomes-chat" value="<?=$dados['nome']?>">
+              </div>
+            <? } ?>
+
+            <div class="col-12 h-100 chat-pessoal">
+              <div class="conversa-nomeCliente"></div>
+              <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
+              <div class="conversa m-0 p-0">
+
+              </div>
+              <input type="text" name="" class="form-control input-conversa m-0 p-0">
+            </div>
           </div>
         </div>
   </div>

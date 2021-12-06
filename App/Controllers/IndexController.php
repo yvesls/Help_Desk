@@ -15,7 +15,7 @@
         public function index(){
             // verifica se o login é igual a erro (erro passado em AuthController -> autenticar) na validação do formulário
 		    $this->view->login = isset($_GET['login']) ? $_GET['login'] : '';
-            $this->render('index', 'layout_into');
+            $this->render('index', 'layout_index');
         }
 
         public function inscreverse() {
