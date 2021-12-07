@@ -229,7 +229,25 @@ input[type=button]:hover {
     position: absolute;
     bottom: 5px;
     left: 1.2vw;
-    width: 27vw;
+}
+
+.input-enviar {
+    position: absolute;
+    bottom: 5px;
+    right: 1.2vw;
+    height: 4vh;
+    background-color: #18A2B8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.input-enviar:hover {
+    background-color: rgb(22, 127, 143)
+}
+
+.input-enviar:active {
+    bottom: 6px;
 }
 
 .input-conversa:focus {

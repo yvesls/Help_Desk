@@ -53,6 +53,17 @@ class Chamado extends Model {
 		return $this;
 	}
 
+	public function getAdm(){
+
+        $query = "select nome from usuarios where nome = :nome";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome',  'administrador');
+        $stmt->execute();
+        
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
     public function getChamados(){
         session_start();
 

@@ -15,6 +15,7 @@ class AppController extends Action {
 		session_start(); // starta a seção
 
 		if($_SESSION['senha'] == "adminadmin"){
+			$this->view->nome = $_SESSION['nome'];
 			$this->render('adm', 'layout1');
 		}	
 		// protege a rota ( procurando se os dados foram preenchidos no processo de autenticação).
@@ -54,8 +55,12 @@ class AppController extends Action {
 		if($chamado->__get('categoria') != '' && $chamado->__get('titulo') != '' && $chamado->__get('descricao') != ''){
 			$chamado->salvar_chamado();
 			
+			$conexaoChamado = Container::getModel('Chamado');
+			$dados = $conexaoChamado->getAdm();
+			$this->view->adm = $dados;
+
 			header('Location: /consultar_chamado');
-		}else {
+		}else { // campo não preenchido
 			$this->view->abrir = true;
 
 			$this->view->chamado = array( // recarregando os dados em increver-se para o usuário não precisar digitar novamente
@@ -68,15 +73,16 @@ class AppController extends Action {
 	}
 
 	public function consultar_chamado() {
-		
-		$conexaoChamado = Container::getModel('Chamado');
-		
+		// Dados CHamados
+		$conexaoChamado = Container::getModel('Chamado');	
 		$dados = $conexaoChamado->getChamados();
-		// echo '<pre>';
-		// print_r($dados);
-		// echo '</pre>';
 		$this->view->dadosChamado = $dados;
 		
+		// Chat
+		$conexaoChamado = Container::getModel('Chamado');
+		$dados = $conexaoChamado->getAdm();
+		$this->view->adm = $dados;
+
 		$this->render('consultar_chamado', 'layout1');
 	}
 
@@ -135,6 +141,29 @@ class AppController extends Action {
 		$conexaoChamado = Container::getModel('Chamado');
 		$conexaoChamado->__set('id', $_POST['id']);
 		$conexaoChamado->set_novo_status();
+	}
+
+	public function comunicacao(){
+		$dados = $_POST['msg'];
+		$valor = explode('Er32', $dados);
+		$conexaoComunicacao = Container::getModel('Comunicacao');
+		// setando mensagem
+		$conexaoComunicacao->__set('nome', $valor[0]);
+		$conexaoComunicacao->__set('mensagem', $valor[1]);
+		$conexaoComunicacao->setComunicacao();
+		$confirma = 'ok';
+		$array = json_decode(json_encode($confirma), true);
+		
+		echo json_encode($confirma);
+	}
+
+	public function recuperaComunicacao(){
+
+		$conexaoComunicacao = Container::getModel('Comunicacao');
+		// resgatando mensagem
+		$recuperaComunicacao = $conexaoComunicacao->getComunicacao();
+		$this->view->mensagens = $recuperaComunicacao;
+
 	}
 }
 ?>

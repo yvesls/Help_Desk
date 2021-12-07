@@ -93,6 +93,18 @@
                 'action' => 'consultar_chamados_realizados_adm'
             );
 
+            $routes['comunicacao'] = array(
+                'route' => '/comunicacao',
+                'controller' => 'AppController',
+                'action' => 'comunicacao'
+            );
+
+            $routes['recuperaComunicacao'] = array(
+                'route' => '/recuperaComunicacao',
+                'controller' => 'AppController',
+                'action' => 'recuperaComunicacao'
+            );
+
             $routes['sair'] = array(
                 'route' => '/sair',
                 'controller' => 'AuthController',
