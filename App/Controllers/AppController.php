@@ -163,7 +163,9 @@ class AppController extends Action {
 		// resgatando mensagem
 		$recuperaComunicacao = $conexaoComunicacao->getComunicacao();
 		$this->view->mensagens = $recuperaComunicacao;
-
+		foreach($this->view->mensagens as $key=>$dados) {
+			echo "<h6>".$dados['nome'].": ".$dados['mensagem']."</h6>";
+		}
 	}
 }
 ?>

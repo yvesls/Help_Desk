@@ -206,7 +206,7 @@ input[type=button]:hover {
     width: 27vw;
     overflow-y: scroll;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     color: rgb(92, 92, 92);
 }
 

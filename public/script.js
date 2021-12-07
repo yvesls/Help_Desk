@@ -27,8 +27,8 @@ $(document).ready(() => {
         $('.popoverClass').remove();
     });
 
-$('.clienteAtual').css('display', 'none'); // esconde a aba do cliente atual
-$('.categoriaAtual').css('display', 'none');
+    $('.clienteAtual').css('display', 'none'); // esconde a aba do cliente atual
+    $('.categoriaAtual').css('display', 'none');
 
     $('#nome').on('change', (e)=> {
         let cliente = $(e.target).val();
@@ -203,9 +203,7 @@ $('.categoriaAtual').css('display', 'none');
     $(".input-enviar").on("click", (e)=>{
         e.preventDefault();
         let mensagem = $('.input-conversa').val();
-        console.log(mensagem)
         let nome = $('.input-nome').val();
-        console.log(nome)
         let concatenaMensagem = nome+'Er32'+mensagem;
         $.ajax({ // realiza uma requisição para o servidor
             // busca no servidor por via get
@@ -246,13 +244,15 @@ $('.categoriaAtual').css('display', 'none');
         var req = new XMLHttpRequest();
         req.onreadystatechange = function(){
             if (req.readyState == 4 && req.status == 200) {
-                    $(".conversa").html(req.responseText);
+                $(".conversa").html(req.responseText);
             }
         }
         req.open('POST', '/recuperaComunicacao', true);
         req.send();
     }
     setInterval(function(){ajax();}, 1000);
+
+    
 
     $(".fecha-conversa").on("click", ()=>{
         $(".chat").removeClass('chat-aberto');
