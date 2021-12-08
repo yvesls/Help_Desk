@@ -149,7 +149,8 @@ class AppController extends Action {
 		$conexaoComunicacao = Container::getModel('Comunicacao');
 		// setando mensagem
 		$conexaoComunicacao->__set('nome', $valor[0]);
-		$conexaoComunicacao->__set('mensagem', $valor[1]);
+		$conexaoComunicacao->__set('destino', $valor[1]);
+		$conexaoComunicacao->__set('mensagem', $valor[2]);
 		$conexaoComunicacao->setComunicacao();
 		$confirma = 'ok';
 		$array = json_decode(json_encode($confirma), true);
@@ -159,12 +160,16 @@ class AppController extends Action {
 
 	public function recuperaComunicacao(){
 
+	
+	
 		$conexaoComunicacao = Container::getModel('Comunicacao');
 		// resgatando mensagem
 		$recuperaComunicacao = $conexaoComunicacao->getComunicacao();
 		$this->view->mensagens = $recuperaComunicacao;
+
+		
 		foreach($this->view->mensagens as $key=>$dados) {
-			echo "<h6>".$dados['nome'].": ".$dados['mensagem']."</h6>";
+			echo $dados['destino'].'@@@y@@@'.$dados['nome'].'@@@y@@@'.$dados['mensagem'].'@@@fim@@@';
 		}
 	}
 }

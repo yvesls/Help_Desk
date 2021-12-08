@@ -204,7 +204,9 @@ $(document).ready(() => {
         e.preventDefault();
         let mensagem = $('.input-conversa').val();
         let nome = $('.input-nome').val();
-        let concatenaMensagem = nome+'Er32'+mensagem;
+        let destinatario = $('.input-destino').val();
+        let concatenaMensagem = nome+'Er32'+destinatario+'Er32'+mensagem;
+ 
         $.ajax({ // realiza uma requisição para o servidor
             // busca no servidor por via get
             type: 'POST', 
@@ -214,7 +216,7 @@ $(document).ready(() => {
             data: 'msg=' + concatenaMensagem, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
             dataType: 'text',// modifica o tipo de retorno (padrao html)
             success: dados => {
-                console.log(dados);
+                
             }, // mostra os dados de erro do back
             error: function ( status, error)  {
                 alert('Deu erro na recuperação dos dados');
@@ -231,7 +233,27 @@ $(document).ready(() => {
 
     $(".nomes-chat").on("click", (e)=>{
         var nomes = $(e.target).val();
-        console.log(nomes)
+        
+        $.ajax({ // realiza uma requisição para o servidor
+            // busca no servidor por via get
+            type: 'POST', 
+            // url da página que interage com o servidor
+            url: '/recuperaComunicacao',
+            // envia os dados que serão parametros para busca no servidor (neste caso a data)
+            data: 'chat=' + nomes, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+            dataType: 'text',// modifica o tipo de retorno (padrao html)
+            success: dados => {
+                
+            }, // mostra os dados de erro do back
+            error: function ( status, error)  {
+                alert('Deu erro na recuperação dos dados');
+                console.log(arguments);
+                console.log(status);
+                console.log(error.message);
+            }
+        }); 
+
+        $(".input-destino").val(nomes);
         $(".chat-pessoal").css('display', 'block');
         $(".chat").addClass('chat-aberto');
         $(".menu-chat").css('display', 'none');
@@ -239,22 +261,61 @@ $(document).ready(() => {
 
     });
 
+    let cont = 1;
     // manda mensagem
     function ajax(){
         var req = new XMLHttpRequest();
         req.onreadystatechange = function(){
             if (req.readyState == 4 && req.status == 200) {
-                $(".conversa").html(req.responseText);
+                $(".conversa").html('');
+                // tratando retorno tipo texto (transformando em matriz de matriz)
+                let array1 = req.responseText.split('@@@fim@@@');
+
+                var dividindoMsg = [];
+                for(let i = 0; i < array1.length; i++){
+                    dividindoMsg = new Array;
+                }
+
+                for(let i = 0; i < array1.length; i++){
+                    
+                    for(let j = 0; j < 3 ; j++){
+                        dividindoMsg[i] = array1[i].split('@@@y@@@');
+                    }
+                }
+                
+                if(cont == 1){
+                    /*
+                        0 - destino
+                        1 - remetente
+                        2 - mensagem
+                    */
+
+                    for(let i = 0; i < dividindoMsg.length; i++){
+                        if(($(".input-nome").val() == dividindoMsg[i][1]) && $(".input-destino").val() == dividindoMsg[i][0]){
+                            let div = document.createElement('P');
+                            $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
+                            $(".conversa").prepend(div);
+                        }else if(($(".input-nome").val() == dividindoMsg[i][0]) && $(".input-destino").val() == dividindoMsg[i][1]){
+                            let div = document.createElement('P');
+                            $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
+                            $(".conversa").prepend(div);
+                        }
+                    }
+                }
             }
         }
         req.open('POST', '/recuperaComunicacao', true);
         req.send();
     }
-    setInterval(function(){ajax();}, 1000);
+   
+
+    setInterval(function(){ajax();}, 100);
 
     
 
     $(".fecha-conversa").on("click", ()=>{
+        $(".conversa").html('1');
+        $(".input-destino").val('');
         $(".chat").removeClass('chat-aberto');
         $(".chat-pessoal").css('display', 'none');
         $(".menu-chat").css('display', 'block');
