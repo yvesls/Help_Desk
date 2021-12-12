@@ -65,7 +65,6 @@ class Chamado extends Model {
     }
 
     public function getChamados(){
-        session_start();
 
 		$usuario = $this; 
 		$usuario->__set('nome', $_SESSION['nome']); // resgatando o usuário para assim buscar pelo nome os dados dele

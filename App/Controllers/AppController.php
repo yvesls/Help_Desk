@@ -12,23 +12,23 @@ class AppController extends Action {
 
 	public function home() {
 
-		session_start(); // starta a seção
+		$this->validaAutenticacao();
 
 		if($_SESSION['senha'] == "adminadmin"){
 			$this->view->nome = $_SESSION['nome'];
 			$this->render('adm', 'layout1');
 		}	
 		// protege a rota ( procurando se os dados foram preenchidos no processo de autenticação).
-		if($_SESSION['id'] != '' && $_SESSION['nome'] != '') {
-			// carrega a rota timeline
-			$this->view->nome = $_SESSION['nome'];
-			$this->render('home', 'layout1');
-		} else {
-			header('Location: /?login=erro');
-		}	
+		
+
+		$this->view->nome = $_SESSION['nome'];
+		$this->render('home', 'layout1');
 	}
 
 	public function abrir_chamado() {
+
+		$this->validaAutenticacao();
+
 		$this->view->chamado = array( // recarregando os dados em increver-se para o usuário não precisar digitar novamente
 			'categoria' => '',
 			'titulo' => '',
@@ -41,7 +41,7 @@ class AppController extends Action {
 
 	public function registra_chamado() {
 
-		session_start(); // iniciando a session para recuperação do id do usuário logado
+		$this->validaAutenticacao();
 
 		$chamado = Container::getModel('Chamado'); // instancia e inicia uma conexão com bd
 		
@@ -73,6 +73,9 @@ class AppController extends Action {
 	}
 
 	public function consultar_chamado() {
+
+		$this->validaAutenticacao();
+
 		// Dados CHamados
 		$conexaoChamado = Container::getModel('Chamado');	
 		$dados = $conexaoChamado->getChamados();
@@ -87,6 +90,8 @@ class AppController extends Action {
 	}
 
 	public function consultar_chamado_adm() {
+
+		$this->validaAutenticacao();
 		
 		$conexaoChamado = Container::getModel('Chamado');
 		
@@ -107,7 +112,9 @@ class AppController extends Action {
 	}
 
 	public function consultar_chamados_realizados_adm(){
-		
+
+		$this->validaAutenticacao();
+
 		$conexaoChamado = Container::getModel('Chamado');
 		
 		$dados = $conexaoChamado->getChamadosRealizadosAdm();
@@ -117,6 +124,8 @@ class AppController extends Action {
 	}
 	
 	public function consultar_cliente_adm(){
+
+		$this->validaAutenticacao();
 
 		$conexaoChamado = Container::getModel('Chamado');
 		$dados = $conexaoChamado->getChamadosAdmPorNome($_POST['nome']);
@@ -128,6 +137,8 @@ class AppController extends Action {
 
 	public function consultar_categoria_adm(){
 
+		$this->validaAutenticacao();
+		
 		$conexaoChamado = Container::getModel('Chamado');
 		$dados = $conexaoChamado->getChamadosAdmPorCategoria($_POST['categoria']);
 		$conexaoChamado->__set('dados', $dados);
@@ -138,12 +149,17 @@ class AppController extends Action {
 
 	public function alterar_status_adm(){
 
+		$this->validaAutenticacao();
+
 		$conexaoChamado = Container::getModel('Chamado');
 		$conexaoChamado->__set('id', $_POST['id']);
 		$conexaoChamado->set_novo_status();
 	}
 
 	public function comunicacao(){
+
+		$this->validaAutenticacao();
+
 		$dados = $_POST['msg'];
 		$valor = explode('Er32', $dados);
 		$conexaoComunicacao = Container::getModel('Comunicacao');
@@ -160,7 +176,7 @@ class AppController extends Action {
 
 	public function recuperaComunicacao(){
 
-	
+		$this->validaAutenticacao();
 	
 		$conexaoComunicacao = Container::getModel('Comunicacao');
 		// resgatando mensagem
@@ -171,6 +187,16 @@ class AppController extends Action {
 		foreach($this->view->mensagens as $key=>$dados) {
 			echo $dados['destino'].'@@@y@@@'.$dados['nome'].'@@@y@@@'.$dados['mensagem'].'@@@fim@@@';
 		}
+	}
+
+	public function validaAutenticacao(){
+
+		session_start();
+		
+		if(!isset($_SESSION['id']) || $_SESSION['id'] == '' || !isset($_SESSION['nome']) || $_SESSION['nome'] == '') {
+
+			header('Location: /?login=erro');
+		} 
 	}
 }
 ?>
