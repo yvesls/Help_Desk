@@ -260,3 +260,7 @@ input[type=button]:hover {
 i {
     color: #18A2B8;
 }
+
+.scrollRevela{
+    visibility: hidden;
+}
