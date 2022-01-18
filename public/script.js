@@ -22,6 +22,7 @@ $(document).ready(() => {
         $('.pai1').css('position', 'static');
         $('.popoverClass').remove();
     });
+    
     $('.img-icon2').mouseleave( () => {
         $('.pai2').css('position', 'static');
         $('.popoverClass').remove();
