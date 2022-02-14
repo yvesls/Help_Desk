@@ -1,0 +1,51 @@
+ <div class="container-fluid">    
+      <div class="row">
+        <div class="banner col-md-6 d-flex bg-info justify-content-center flex-column align-content-center align-items-center height-100">
+          <div class="mt-5 mx-auto text-center mb-2">
+            <h1 class="text-white mb-4 bold">Lorem ipsum dolor sit amet </h1>
+            <p class="text-white">Labore vero minus fuga, dicta nesciunt perferendis maiores aspernatur modi eius quidem dolores accusamus. Architecto animi recusandae at tempore eligendi possimus sit!</p>
+          </div>
+          <div class="col-8 mx-auto d-flex align-content-end mb-0 pb-0">
+            <img src="/img_index.png" class="img-fluid" alt="atendimento ao cliente">
+          </div>
+        </div>
+        <div class="col-md-6 m-0 p-0 d-flex justify-content-center align-content-center align-items-center height-100">
+            <div class="col-8">
+              <h1 class="mb-4 bold">
+                Login
+              </h1>
+              <form class="col-12 m-0 p-0" action="/autenticar" method="post"> <!-- ação que encaminha os dados para a parte do servidor -->
+                  <div class="form-group"> <!-- method post: usado para deixar menos vunerável os dados do cliente, ao contrário do metodo get(que é o padrão) -->
+                    <label class="bold" for="email">Email:</label>
+                    <input name="email" id="email" type="email" class="form-control" placeholder="E-mail">
+                  </div> <!-- por meio do name, o servidor transforma as informações passadas em parâmetros para a page do servidor php (aparece na url de início) -->
+                  <div class="form-group">
+                    <label class="bold" for="senha">Senha:</label>
+                    <input name="senha" id="senha" type="password" class="form-control" placeholder="Senha">
+                  </div>
+                  <? if($this->view->login == 'erro') { ?>
+                    <div class="row">
+                      <div class="col">
+                      <span class="text text-danger animate__animated animate__headShake position-absolute">Email e/ou senha inválido(s)!</span>
+                      </div>
+                    </div>
+                  <? } ?>
+                  <? 
+                    // fazendo novo teste: se erro2(ou seja, as páginas protegidas forem buscadas sem ter o acesso autenticado) ocorrer, chama essa página com essa mensagem
+                    if(isset($_GET['login']) && $_GET['login'] == 'erro2'){ // verifica se o índice estã setado(ativo)
+
+                  ?>
+
+                  <div class="text-danger pb-3">
+                    Autentifique a permissão antes de tentar acessar essa página protegida
+                  </div>
+
+                  <? } ?> 
+
+                  <button class="col-7 btn btn-lg btn-info btn-block mb-3 position-relative mt-5" type="submit">Entrar</button>
+                  <a class="m-0 p-0 col-7 text-center text-info d-flex justify-content-center" href="/inscreverse">Não possui cadastro? Click Aqui.</a>
+              </form>  
+            </div>
+        </div>
+      </div>
+    </div>
