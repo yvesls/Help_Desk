@@ -40,24 +40,20 @@
           </div>
         </div>
         <div class="col-6 col-md-4 col-xl-3 comunicacao">
-          <button class="col-6 col-md-3 col-xl-1 btn btn-info btn-chat">Chat</button>
-          
+          <?php foreach($this->view->adm as $key=>$dados){ ?>
+            <input class="col-1 btn-chat-cliente" value="<?=$dados['nome']?>"></input>
+          <? } ?>
+
           <div class="chat bg-light rounded">
             <div class="bg-light text-center menu-chat">
               <small class="text-info">Chat</small>
               <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
             </div>
             
-            <?php foreach($this->view->adm as $key=>$dados){ ?>
-              <div class=" text-center p-0 m-0 chat-clientes">
-                <input type="button" class="col-12 m-0 py-3 nomes-chat" value="<?=$dados['nome']?>">
-              </div>
-            <? } ?>
-          
             <div class="col-12 h-100 chat-pessoal">
               <div class="conversa-nomeCliente"></div>
               <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
-              <div class="conversa m-0 p-1">
+              <div class="conversa m-0">
 
               </div>
               <form>

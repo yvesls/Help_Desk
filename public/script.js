@@ -232,36 +232,6 @@ $(document).ready(() => {
 
     $(".chat-pessoal").css('display', 'none');
 
-    $(".nomes-chat").on("click", (e)=>{
-        var nomes = $(e.target).val();
-        
-        $.ajax({ // realiza uma requisição para o servidor
-            // busca no servidor por via get
-            type: 'POST', 
-            // url da página que interage com o servidor
-            url: '/recuperaComunicacao',
-            // envia os dados que serão parametros para busca no servidor (neste caso a data)
-            data: 'chat=' + nomes, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
-            dataType: 'text',// modifica o tipo de retorno (padrao html)
-            success: dados => {
-                
-            }, // mostra os dados de erro do back
-            error: function ( status, error)  {
-                alert('Deu erro na recuperação dos dados');
-                console.log(arguments);
-                console.log(status);
-                console.log(error.message);
-            }
-        }); 
-
-        $(".input-destino").val(nomes);
-        $(".chat-pessoal").css('display', 'block');
-        $(".chat").addClass('chat-aberto');
-        $(".menu-chat").css('display', 'none');
-        $(".chat-clientes").css('display', 'none');
-
-    });
-
     let cont = 1;
     // manda mensagem
     function ajax(){
@@ -293,12 +263,27 @@ $(document).ready(() => {
 
                     for(let i = 0; i < dividindoMsg.length; i++){
                         if(($(".input-nome").val() == dividindoMsg[i][1]) && $(".input-destino").val() == dividindoMsg[i][0]){
-                            let div = document.createElement('P');
+                            let div = document.createElement('SPAN');
                             $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
+                            $(div).css('background-color', '#eeeeee');
+                            $(div).css('border-radius', '15px');
+                            $(div).css('padding', '5px 10px 5px 10px');
+                            $(div).css('margin', '5px 0px');
+                            $(div).css('float', 'left');
+                            $(div).css('text-align', 'left');
+                            $(div).css('width', 'fit-content');
                             $(".conversa").prepend(div);
                         }else if(($(".input-nome").val() == dividindoMsg[i][0]) && $(".input-destino").val() == dividindoMsg[i][1]){
-                            let div = document.createElement('P');
+                            let div = document.createElement('SPAN');
                             $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
+                            $(div).css('background-color', '#dfdfdf');
+                            $(div).css('border-radius', '15px');
+                            $(div).css('padding', '5px 10px 5px 10px');
+                            $(div).css('margin', '5px 0px 5px auto');
+                            $(div).css('display', 'flex');
+                            $(div).css('justify-content', 'right');
+                            $(div).css('right', '0');
+                            $(div).css('width', 'fit-content');
                             $(".conversa").prepend(div);
                         }
                     }
@@ -312,28 +297,105 @@ $(document).ready(() => {
 
     setInterval(function(){ajax();}, 100);
 
+    if($(".input-nome").val() == "administrador"){ // para o adm mostra todos
+        console.log('adm')
+        $(".btn-chat").on("click", ()=>{
+            $(".btn-chat").css('display', 'none');
+            $(".chat").css('display', 'block');
+            $(".fecha-chat").css('display', 'block');
+        });
+        $(".fecha-chat").on("click", ()=>{
+            $(".btn-chat").css('display', 'block');
+            $(".chat").css('display', 'none');
+            $(".fecha-chat").css('display', 'none');
+        });
+
+        $(".fecha-conversa").on("click", ()=>{
+            $(".conversa").html('1');
+            $(".input-destino").val('');
+            $(".chat").removeClass('chat-aberto');
+            $(".chat-pessoal").css('display', 'none');
+            $(".menu-chat").css('display', 'block');
+            $(".chat-clientes").css('display', 'block');
+            $(".fecha-chat").css('display', 'block');
+        });
+
+        $(".nomes-chat").on("click", (e)=>{
+            var nomes = $(e.target).val();
+            
+            $.ajax({ // realiza uma requisição para o servidor
+                // busca no servidor por via get
+                type: 'POST', 
+                // url da página que interage com o servidor
+                url: '/recuperaComunicacao',
+                // envia os dados que serão parametros para busca no servidor (neste caso a data)
+                data: 'chat=' + nomes, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+                dataType: 'text',// modifica o tipo de retorno (padrao html)
+                success: dados => {
+                    
+                }, // mostra os dados de erro do back
+                error: function ( status, error)  {
+                    alert('Deu erro na recuperação dos dados');
+                    console.log(arguments);
+                    console.log(status);
+                    console.log(error.message);
+                }
+            }); 
     
+            $(".input-destino").val(nomes);
+            $(".chat-pessoal").css('display', 'block');
+            $(".chat").addClass('chat-aberto');
+            $(".menu-chat").css('display', 'none');
+            $(".chat-clientes").css('display', 'none');
+        });
 
-    $(".fecha-conversa").on("click", ()=>{
-        $(".conversa").html('1');
-        $(".input-destino").val('');
-        $(".chat").removeClass('chat-aberto');
-        $(".chat-pessoal").css('display', 'none');
-        $(".menu-chat").css('display', 'block');
-        $(".chat-clientes").css('display', 'block');
-        $(".fecha-chat").css('display', 'block');
-    });
+    }else {
+        console.log('clientes')
 
-    $(".btn-chat").on("click", ()=>{
-        $(".btn-chat").css('display', 'none');
-        $(".chat").css('display', 'block');
-        $(".fecha-chat").css('display', 'block');
-    });
-    $(".fecha-chat").on("click", ()=>{
-        $(".btn-chat").css('display', 'block');
-        $(".chat").css('display', 'none');
-        $(".fecha-chat").css('display', 'none');
-    });
+        $(".btn-chat-cliente").on("click", (e)=>{
+            
+            var nomes = $(e.target).val();
+            console.log(nomes)
+            $(".btn-chat-cliente").css("display", 'none');
+            $(".menu-chat").css('display', 'none');
+            $(".chat-clientes").css('display', 'none');
+            $(".chat").css('display', 'block');
+
+            $(".input-destino").val(nomes);
+            $(".chat-pessoal").css('display', 'block');
+            $(".chat").addClass('chat-aberto');   
+            
+            $.ajax({ // realiza uma requisição para o servidor
+                // busca no servidor por via get
+                type: 'POST', 
+                // url da página que interage com o servidor
+                url: '/recuperaComunicacao',
+                // envia os dados que serão parametros para busca no servidor (neste caso a data)
+                data: 'chat=' + nomes, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+                dataType: 'text',// modifica o tipo de retorno (padrao html)
+                success: dados => {
+                    
+                }, // mostra os dados de erro do back
+                error: function ( status, error)  {
+                    alert('Deu erro na recuperação dos dados');
+                    console.log(arguments);
+                    console.log(status);
+                    console.log(error.message);
+                }
+            }); 
+    
+        });
+        
+        $(".fecha-conversa").on("click", ()=>{
+            $(".conversa").html('1');
+            $(".input-destino").val('');
+            $(".chat").css('display', 'none');
+            $(".chat-pessoal").css('display', 'none');
+            $(".btn-chat-cliente").css('display', 'block');
+        });
+    }
+
+    
     
     
 });

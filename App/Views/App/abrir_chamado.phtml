@@ -1,7 +1,7 @@
 
     <div class="container d-flex justify-content-center">    
 
-        <div class="col-md-8 mt-3 card-abrir-chamado">
+      <div class="col-md-8 mt-3 card-abrir-chamado">
           <div class="card">
             <div class="card-header">
               Abertura de chamado
@@ -52,6 +52,31 @@
               </div>
             </div>
         </div>
-        
+        <div class="col-6 col-md-4 col-xl-3 comunicacao">
+          <?php foreach($this->view->adm as $key=>$dados){ ?>
+            <input class="col-1 btn-chat-cliente" value="<?=$dados['nome']?>"></input>
+          <? } ?>
+
+          <div class="chat bg-light rounded">
+            <div class="bg-light text-center menu-chat">
+              <small class="text-info">Chat</small>
+              <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
+            </div>
+            
+            <div class="col-12 h-100 chat-pessoal">
+              <div class="conversa-nomeCliente"></div>
+              <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
+              <div class="conversa m-0">
+
+              </div>
+              <form>
+		            <input class="d-none input-nome" type="text" name="nome" value="<?= $_SESSION['nome'] ?>">
+                <input class="d-none input-destino" type="text" name="nome" value="adminstrador">
+                <input type="text" name="mensagem" class="form-control input-conversa m-0 p-0 col-8" placeholder="mensagem">
+                <input class="col-3 input-enviar " type="submit" value="Enviar">
+              </form>
+            </div>
+          </div>
+        </div>
     </div>
     

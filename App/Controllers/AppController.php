@@ -18,6 +18,17 @@ class AppController extends Action {
 			$this->view->nome = $_SESSION['nome'];
 			$this->render('adm', 'layout1');
 		}	
+
+		// Dados CHamados
+		$conexaoChamado = Container::getModel('Chamado');	
+		$dados = $conexaoChamado->getChamados();
+		$this->view->dadosChamado = $dados;
+		
+		// Chat
+		$conexaoChamado = Container::getModel('Chamado');
+		$dados = $conexaoChamado->getAdm();
+		$this->view->adm = $dados;
+		
 		// protege a rota ( procurando se os dados foram preenchidos no processo de autenticação).
 		
 
@@ -36,6 +47,17 @@ class AppController extends Action {
 		);
 
 		$this->view->abrir = false;
+
+		// Dados CHamados
+		$conexaoChamado = Container::getModel('Chamado');	
+		$dados = $conexaoChamado->getChamados();
+		$this->view->dadosChamado = $dados;
+		
+		// Chat
+		$conexaoChamado = Container::getModel('Chamado');
+		$dados = $conexaoChamado->getAdm();
+		$this->view->adm = $dados;
+
 		$this->render('abrir_chamado', 'layout1');
 	}
 

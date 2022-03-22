@@ -24,7 +24,7 @@ body {
 
 .banner {
     overflow-y: hidden;
-    background-image: linear-gradient(to bottom right, #0bafa4, #00b4b0, #00b8bb, #00bdc7, #09c1d2, #05c6d5, #02cad8, #00cfdb, #00d4d5, #00dacc, #00dec0, #21e2b2);
+    background-image: linear-gradient(to right bottom, #17a2b8, #0395b1, #17a2b8, #007ca1, #006f97, #006f97, #006f97, #006f97, #007ca1, #17a2b8, #0395b1, #17a2b8);
     background-size: 200% 200%;
     animation: moveGradient 10s linear infinite alternate;
 }
@@ -37,7 +37,7 @@ body {
 .popoverClass{
     width: 150%;
     margin-top: 5px;
-    margin-left: -10%;
+    margin-left: -25%;
     text-align: center;
     position: absolute;
     background-color: rgb(255, 255, 255);
@@ -84,11 +84,42 @@ body {
     z-index: 1;
 }
 
-.btn-chat {
+.btn-chat, .btn-chat-cliente {
     position: inherit;
+    height: 70px;
+    width: 70px;
     bottom: 2vh;
     right: 1vw;
-    width: 20em;
+    background-color: #00b4b100;
+    padding: 9px;
+    color: #f7f7f7;
+}
+
+img:hover {
+    cursor: pointer;
+    width: 101%;
+    height: 101%;
+    transition: all 0.3s;
+}
+
+.btn-chat-cliente {
+    height: 40px;
+    width: 65px;
+    border: 1px solid #006f97;
+    background: #d9dadb00;
+    border-radius: 10px;
+    color: #006f97;
+}
+
+.btn-chat-cliente:hover {
+    cursor: pointer;
+    color: white;
+    background-color: #006f97;
+}
+
+.btn-chat-cliente:focus, .btn-chat-cliente:active {
+    background-color: white;
+    color: rgb(255, 255, 255);
 }
 
 .chat {
@@ -169,6 +200,7 @@ input[type=button]:hover {
 
 .chat-pessoal.chat-pessoal.chat-pessoal.chat-pessoal {
     display: none;
+    
 }
 
 .chat-aberto.chat-aberto.chat-aberto.chat-aberto {
@@ -216,6 +248,7 @@ input[type=button]:hover {
     flex-direction: column-reverse;
     color: rgb(92, 92, 92);
     word-break: break-all;
+    padding: 0px 10px;
 }
 
 .conversa::-webkit-scrollbar {
@@ -236,10 +269,12 @@ input[type=button]:hover {
 .input-conversa {
     position: absolute;
     bottom: 5px;
+    height: 5vh;
     left: 1.2vw;
 }
 
 .input-enviar {
+    height: 5vh;
     position: absolute;
     bottom: 5px;
     right: 1.2vw;
@@ -247,6 +282,10 @@ input[type=button]:hover {
     color: white;
     border: none;
     border-radius: 5px;
+}
+
+.input-conversa::placeholder {
+    padding-left: 10px;
 }
 
 .input-enviar:hover {
