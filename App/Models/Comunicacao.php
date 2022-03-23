@@ -24,7 +24,7 @@ class Comunicacao extends Model {
 
     public function setComunicacao() {
 
-		$query = "insert into tb_comunicacao(nome, destino, mensagem)values(:nome, :destino, :mensagem)"; //  preenchendo nome email e senha
+		$query = "insert into tb_comunicacao(nome, destino, mensagem, datadoenvio)values(:nome, :destino, :mensagem, CURRENT_TIMESTAMP())"; //  preenchendo nome email e senha
 		$stmt = $this->db->prepare($query); // instanciando o pbo
 		$stmt->bindValue(':nome', $this->__get('nome')); // bind (parte da inserção) substitui o atributo nome pelo get do nome passado
 		$stmt->bindValue(':destino', $this->__get('destino'));
@@ -36,7 +36,7 @@ class Comunicacao extends Model {
 
     public function getComunicacao() {
 
-		$query = "select nome, destino, mensagem from tb_comunicacao";
+		$query = "select nome, destino, mensagem, datadoenvio from tb_comunicacao";
 
 		return $this->db->query($query)->fetchAll();
 	}

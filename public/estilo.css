@@ -1,3 +1,4 @@
+/* configurações gerais */
 @font-face {
     font-family: roboto;
     src: url(Roboto-Regular.ttf);
@@ -77,6 +78,7 @@ body {
     left: 20px;
 }
 
+/* configurações de comunicação (chat) ----------------------------------------------------------------------------------------------------------*/
 .comunicacao {
     position: fixed;
     bottom: 0;
@@ -95,7 +97,7 @@ body {
     color: #f7f7f7;
 }
 
-img:hover {
+.btn-chat img:hover {
     cursor: pointer;
     width: 101%;
     height: 101%;

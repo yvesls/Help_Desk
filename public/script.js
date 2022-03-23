@@ -1,6 +1,5 @@
-
 $(document).ready(() => {
-
+    // inicio -- configurações dos popovers --
     $('.img-icon').mouseenter( () => {
         $('.pai1').css('position', 'relative');
         let d = document.createElement('div');
@@ -17,20 +16,19 @@ $(document).ready(() => {
             .html(text)
             .appendTo($(".pai2"));
     });
-
     $('.img-icon').mouseleave( () => {
         $('.pai1').css('position', 'static');
         $('.popoverClass').remove();
     });
-    
     $('.img-icon2').mouseleave( () => {
         $('.pai2').css('position', 'static');
         $('.popoverClass').remove();
     });
-
+    // fim -- configurações dos popovers (nas imagens até o momento) -- 
+    // inicio configurações das chamadas ----------------------------------------------------------------------------------------------------------------------------------------
     $('.clienteAtual').css('display', 'none'); // esconde a aba do cliente atual
     $('.categoriaAtual').css('display', 'none');
-
+    // selecionando chamados por nome
     $('#nome').on('change', (e)=> {
         let cliente = $(e.target).val();
         $('.peloNome').remove();       
@@ -74,7 +72,7 @@ $(document).ready(() => {
         });      
         // metodo, url, dados, sucesso, erro, etc (ele realiza. Informações basicas)
     });
-
+    // selecionando os chamados pela categoria
     $('#categoria').on('change', (e)=> {
         let categoria = $(e.target).val();
         $('.pelaCategoria').remove();
@@ -161,7 +159,7 @@ $(document).ready(() => {
             }
         }); 
     });
-    
+    // selecionando os chamados por status
     $(".status").on("click", (e)=>{
         e.preventDefault(); // impedir o evento submit
         
@@ -200,7 +198,18 @@ $(document).ready(() => {
         }); 
 
     });
+    
+    // animação das chamadas -- realizadas e pendentes --
+    window.sr = ScrollReveal({reset: true});
 
+    sr.reveal('.scrollRevela', {
+        duration: 500,
+        rotate: {x:0, y:80, z:0}
+    });
+    // fim -- configurações das chamadas -- 
+    // inicio das configurações do chat ---------------------------------------------------------------------------------------------------------------------------------
+
+    // envia mensagem para o banco de dados
     $(".input-enviar").on("click", (e)=>{
         e.preventDefault();
         let mensagem = $('.input-conversa').val();
@@ -226,17 +235,16 @@ $(document).ready(() => {
                 console.log(error.message);
             }
         }); 
-        
-        $(".input-conversa").val('');
-    });
-
+    });   
+    
     $(".chat-pessoal").css('display', 'none');
-
+    $(".input-conversa").val('');
     let cont = 1;
     // manda mensagem
     function ajax(){
         var req = new XMLHttpRequest();
         req.onreadystatechange = function(){
+            // verifica se a conexão com o bd deu certo (parte comunicação)
             if (req.readyState == 4 && req.status == 200) {
                 $(".conversa").html('');
                 // tratando retorno tipo texto (transformando em matriz de matriz)
@@ -253,50 +261,64 @@ $(document).ready(() => {
                         dividindoMsg[i] = array1[i].split('@@@y@@@');
                     }
                 }
-                
                 if(cont == 1){
                     /*
                         0 - destino
                         1 - remetente
                         2 - mensagem
                     */
-
+                    let  data = [], dataSeparado = [];
+                    // tratando mensagem 
                     for(let i = 0; i < dividindoMsg.length; i++){
-                        if(($(".input-nome").val() == dividindoMsg[i][1]) && $(".input-destino").val() == dividindoMsg[i][0]){
-                            let div = document.createElement('SPAN');
+                        // modificando formato de data com split (precisa ser melhorado, fazendo isso no próprio banco de dados)
+                        data[i] = dividindoMsg[i][3].split(' ');
+                        //console.log(data[i][0]) // data ano mes dia
+                        dataSeparado[i] = data[i][0].split('-');
+                        //console.log(dataSeparado[i]); // data separada [0]ano [1]mes [2]dia
+                        //console.log(data[i][1]) // horário certo 
+                        if(($(".input-nome").val() == dividindoMsg[i][1]) && $(".input-destino").val() == dividindoMsg[i][0]){ // mensagem recebida
+                            let div = document.createElement('SPAN'), hora = document.createElement('P'); //cria divs
+                             // insere data formatada em hora
+                            $(hora).html(dataSeparado[i][2]+'-'+dataSeparado[i][1]+'-'+dataSeparado[i][0]+' às '+data[i][1]);
+                            // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
+                            $(hora).css('font-size', '14px').css('float', 'right').css('font-style', 'italic');
+                            // insere remetente e mensagem dentro da div
                             $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
-                            $(div).css('background-color', '#eeeeee');
-                            $(div).css('border-radius', '15px');
-                            $(div).css('padding', '5px 10px 5px 10px');
-                            $(div).css('margin', '5px 0px');
-                            $(div).css('float', 'left');
-                            $(div).css('text-align', 'left');
-                            $(div).css('width', 'fit-content');
+                            // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
+                            $(div).css('background-color', '#eeeeee').css('border-radius', '15px').css('padding', '5px 10px 5px 10px').css('margin', '5px 0px').css('float', 'left').css('text-align', 'left').css('width', 'fit-content');
+                            // insere no final da tela do chat
                             $(".conversa").prepend(div);
-                        }else if(($(".input-nome").val() == dividindoMsg[i][0]) && $(".input-destino").val() == dividindoMsg[i][1]){
-                            let div = document.createElement('SPAN');
+                            $(".conversa").prepend(hora);
+
+                        }else if(($(".input-nome").val() == dividindoMsg[i][0]) && $(".input-destino").val() == dividindoMsg[i][1]){ // mensagem enviada
+                            let div = document.createElement('SPAN'), hora = document.createElement('P'); // cria divs
+                            // insere data formatada em hora
+                            $(hora).html(dataSeparado[i][2]+'-'+dataSeparado[i][1]+'-'+dataSeparado[i][0]+' às '+data[i][1]);
+                            // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
+                            $(hora).css('font-size', '14px').css('float', 'right').css('font-style', 'italic').css('display', 'flex').css('justify-content', 'right');
+                            // insere remetente e mensagem dentro da div
                             $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
-                            $(div).css('background-color', '#dfdfdf');
-                            $(div).css('border-radius', '15px');
-                            $(div).css('padding', '5px 10px 5px 10px');
-                            $(div).css('margin', '5px 0px 5px auto');
-                            $(div).css('display', 'flex');
-                            $(div).css('justify-content', 'right');
-                            $(div).css('right', '0');
-                            $(div).css('width', 'fit-content');
+                            // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
+                            $(div).css('background-color', '#dfdfdf').css('border-radius', '15px').css('padding', '5px 10px 5px 10px').css('margin', '5px 0px 5px auto').css('display', 'flex').css('justify-content', 'right').css('right', '0').css('width', 'fit-content');
+                            // insere no final da tela do chat
                             $(".conversa").prepend(div);
+                            $(".conversa").prepend(hora);
                         }
                     }
                 }
             }
         }
+        // recuperando dados da comunicação -- chat --
         req.open('POST', '/recuperaComunicacao', true);
         req.send();
     }
    
+    // Verificação de qual aplicação será aplicada para o chat ----------------------------------------------------------------------------------------------------------------------------------
 
-    setInterval(function(){ajax();}, 100);
+    // chama a função ajax que recupera os dados da comunicação a cada 200 milésimos de segundo -- chat --
+    setInterval(function(){ajax();}, 200);
 
+    // verifica se o usuário é o administrador. Caso seja, o chat exibirá todos os clientes do usuário -- chat --
     if($(".input-nome").val() == "administrador"){ // para o adm mostra todos
         console.log('adm')
         $(".btn-chat").on("click", ()=>{
@@ -349,8 +371,7 @@ $(document).ready(() => {
             $(".chat-clientes").css('display', 'none');
         });
 
-    }else {
-        console.log('clientes')
+    }else { // caso seja cliente, o chat abrirá apenas para falar com o administrador ) -- chat --
 
         $(".btn-chat-cliente").on("click", (e)=>{
             
@@ -365,6 +386,7 @@ $(document).ready(() => {
             $(".chat-pessoal").css('display', 'block');
             $(".chat").addClass('chat-aberto');   
             
+            // recupera a comunicação -- chat --
             $.ajax({ // realiza uma requisição para o servidor
                 // busca no servidor por via get
                 type: 'POST', 
@@ -386,6 +408,7 @@ $(document).ready(() => {
     
         });
         
+        // botão fecha a conversa -- chat --
         $(".fecha-conversa").on("click", ()=>{
             $(".conversa").html('1');
             $(".input-destino").val('');
@@ -395,14 +418,6 @@ $(document).ready(() => {
         });
     }
 
-    
-    
-    
-});
+    // fim -- configurações dos chats --
 
-window.sr = ScrollReveal({reset: true});
-
-sr.reveal('.scrollRevela', {
-    duration: 500,
-    rotate: {x:0, y:80, z:0}
 });

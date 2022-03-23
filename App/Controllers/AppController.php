@@ -207,7 +207,7 @@ class AppController extends Action {
 
 		
 		foreach($this->view->mensagens as $key=>$dados) {
-			echo $dados['destino'].'@@@y@@@'.$dados['nome'].'@@@y@@@'.$dados['mensagem'].'@@@fim@@@';
+			echo $dados['destino'].'@@@y@@@'.$dados['nome'].'@@@y@@@'.$dados['mensagem'].'@@@y@@@'.$dados['datadoenvio'].'@@@fim@@@';
 		}
 	}
 

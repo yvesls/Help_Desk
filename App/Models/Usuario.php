@@ -65,7 +65,7 @@ class Usuario extends Model {
 	}
 
 	public function getClientes(){
-		$query = "select nome from usuarios where nome != 'administrador'";
+		$query = "select nome from usuarios where nome != 'Administrador'";
 
 		return $this->db->query($query)->fetchAll();
 	}
