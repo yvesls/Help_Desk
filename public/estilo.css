@@ -9,10 +9,18 @@
     src: url(Roboto-Medium.ttf);
 }
 
+* {
+    font-family: roboto;
+}
+
 body {
     scroll-behavior: smooth;
     overflow-x: hidden;
     font-family: roboto, Arial, Helvetica, sans-serif;
+}
+
+.preencher-corretamente-aviso{
+    font-size: 14px;
 }
 
 .height-100{
@@ -94,10 +102,11 @@ body {
     right: 1vw;
     background-color: #00b4b100;
     padding: 9px;
-    color: #f7f7f7;
+    color: #006f9700;
+    z-index: 2;
 }
 
-.btn-chat img:hover {
+.btn-chat img:hover, .btn-chat-cliente img:hover {
     cursor: pointer;
     width: 101%;
     height: 101%;
@@ -105,23 +114,20 @@ body {
 }
 
 .btn-chat-cliente {
-    height: 40px;
-    width: 65px;
-    border: 1px solid #006f97;
-    background: #d9dadb00;
-    border-radius: 10px;
-    color: #006f97;
+    cursor: pointer;
+    text-indent: -300px;
 }
 
-.btn-chat-cliente:hover {
-    cursor: pointer;
-    color: white;
-    background-color: #006f97;
+.img-chat {
+    position: fixed;
+    bottom:3.25vh;
+    right: 1.75vw;
+    z-index: 1;
 }
 
 .btn-chat-cliente:focus, .btn-chat-cliente:active {
-    background-color: white;
-    color: rgb(255, 255, 255);
+    border: none;
+    box-shadow: none;
 }
 
 .chat {
@@ -273,6 +279,10 @@ input[type=button]:hover {
     bottom: 5px;
     height: 5vh;
     left: 1.2vw;
+}
+
+.input-conversa::placeholder {
+    text-indent: -8px;
 }
 
 .input-enviar {

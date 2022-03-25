@@ -9,11 +9,13 @@ class Chamado extends Model {
     // atributos que representam as colunas de registros do banco de dados
 	private $id;
 	private $nome;
+	private $nome_usuario;
 	private $categoria;
 	private $titulo;
 	private $descricao;
 	private $status;
 	private $dados;
+	private $cep, $endereco, $cidade, $bairro, $uf, $complemento;
 
     // modelos de set e get
 	public function __get($atributo) {
@@ -61,7 +63,6 @@ class Chamado extends Model {
         $stmt->execute();
         
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
     }
 
     public function getChamados(){
@@ -114,6 +115,39 @@ class Chamado extends Model {
         $stmt->execute();
 
 		return $stmt->fetchAll(\PDO::FETCH_OBJ);
+	}
+
+	public function verificaSeExisteEnderecoCad($nome_usuario) { // retorna os dados de vendas de vendas
+		$usuario = $this; 
+		$usuario->__set('nome_usuario', $nome_usuario);
+		$query = '
+			select 
+				count(*) as nome 
+			from 
+				tb_endereco
+			where
+			nome_usuario = :nome_usuario';
+
+		$stmt = $this->db->prepare($query);
+		$stmt->bindValue(':nome_usuario', $nome_usuario);
+		$stmt->execute();
+
+		return $stmt->fetch();
+	}
+
+	public function salvar_endereco() {
+		$query = "insert into tb_endereco(nome_usuario, cep, endereco, bairro, cidade, UF, complemento)values(:nome_usuario, :cep, :endereco, :bairro, :cidade, :UF, :complemento)"; //  preenchendo nome email e senha
+		$stmt = $this->db->prepare($query); // instanciando o pbo
+		$stmt->bindValue(':nome_usuario', $this->__get('nome'));
+		$stmt->bindValue(':cep', $this->__get('cep')); // bind (parte da inserção) substitui o atributo nome pelo get do nome passado
+		$stmt->bindValue(':endereco', $this->__get('endereco'));
+		$stmt->bindValue(':bairro', $this->__get('bairro')); //md5() -> hash 32 caracteres (criptografia da senha)
+		$stmt->bindValue(':cidade', $this->__get('cidade'));
+		$stmt->bindValue(':UF', $this->__get('uf'));
+		$stmt->bindValue(':complemento', $this->__get('complemento'));
+        $stmt->execute(); // executa o pdo stmt
+
+		return $this;
 	}
 }
 

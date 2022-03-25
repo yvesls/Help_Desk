@@ -279,11 +279,11 @@ $(document).ready(() => {
                         if(($(".input-nome").val() == dividindoMsg[i][1]) && $(".input-destino").val() == dividindoMsg[i][0]){ // mensagem recebida
                             let div = document.createElement('SPAN'), hora = document.createElement('P'); //cria divs
                              // insere data formatada em hora
-                            $(hora).html(dataSeparado[i][2]+'-'+dataSeparado[i][1]+'-'+dataSeparado[i][0]+' às '+data[i][1]);
+                            $(hora).html(dividindoMsg[i][1] + ' - ' + dataSeparado[i][2]+'/'+dataSeparado[i][1]+'/'+dataSeparado[i][0]+' às '+data[i][1]);
                             // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
                             $(hora).css('font-size', '14px').css('float', 'right').css('font-style', 'italic');
                             // insere remetente e mensagem dentro da div
-                            $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
+                            $(div).html(dividindoMsg[i][2]);
                             // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
                             $(div).css('background-color', '#eeeeee').css('border-radius', '15px').css('padding', '5px 10px 5px 10px').css('margin', '5px 0px').css('float', 'left').css('text-align', 'left').css('width', 'fit-content');
                             // insere no final da tela do chat
@@ -293,11 +293,11 @@ $(document).ready(() => {
                         }else if(($(".input-nome").val() == dividindoMsg[i][0]) && $(".input-destino").val() == dividindoMsg[i][1]){ // mensagem enviada
                             let div = document.createElement('SPAN'), hora = document.createElement('P'); // cria divs
                             // insere data formatada em hora
-                            $(hora).html(dataSeparado[i][2]+'-'+dataSeparado[i][1]+'-'+dataSeparado[i][0]+' às '+data[i][1]);
+                            $(hora).html(dividindoMsg[i][1] + ' - ' + dataSeparado[i][2]+'/'+dataSeparado[i][1]+'/'+dataSeparado[i][0]+' às '+data[i][1]);
                             // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
                             $(hora).css('font-size', '14px').css('float', 'right').css('font-style', 'italic').css('display', 'flex').css('justify-content', 'right');
                             // insere remetente e mensagem dentro da div
-                            $(div).html(dividindoMsg[i][1]+': '+dividindoMsg[i][2]);
+                            $(div).html(dividindoMsg[i][2]);
                             // configuração de css da div (necessário refinar. Por enquanto irei colocar em fila para economizar espaço)
                             $(div).css('background-color', '#dfdfdf').css('border-radius', '15px').css('padding', '5px 10px 5px 10px').css('margin', '5px 0px 5px auto').css('display', 'flex').css('justify-content', 'right').css('right', '0').css('width', 'fit-content');
                             // insere no final da tela do chat
@@ -378,6 +378,7 @@ $(document).ready(() => {
             var nomes = $(e.target).val();
             console.log(nomes)
             $(".btn-chat-cliente").css("display", 'none');
+            $(".img-chat").css("display", 'none');
             $(".menu-chat").css('display', 'none');
             $(".chat-clientes").css('display', 'none');
             $(".chat").css('display', 'block');
@@ -415,9 +416,49 @@ $(document).ready(() => {
             $(".chat").css('display', 'none');
             $(".chat-pessoal").css('display', 'none');
             $(".btn-chat-cliente").css('display', 'block');
+            $(".img-chat").css("display", 'block');
         });
     }
+    // limpa campo após enviar mensagem
+
+    $('.input-enviar').on('click', function(){
+        $('.input-conversa').delay(500).val('');
+    });
+    $('.input-conversa').keypress(function(event){
+        if ( event.value == 13 ) {
+            $('.input-conversa').delay(500).val('');
+         }
+    });
 
     // fim -- configurações dos chats --
-
+    // inicio -- configurações de envio -- abrir chamado --
+    $('#complemento').blur(function(){
+        if($('#titulo').val() != '' && $('#categoria_chamado').val() != 'Tipo de problema' && $('#descricao').val() != '' && $('#CEP').val() != '' && $('#endereco').val() != '' && $('#bairro').val() != '' && $('#cidade').val() != '' && $('#uf').val() != '' && $('#complemento').val() != ''){
+             $('.btn-abrir').removeAttr('disabled');
+             $('.preencher-corretamente-aviso').html('');
+        }else {
+            $('.btn-abrir').attr('disabled', true);
+            $('.preencher-corretamente-aviso').html('Para liberar o botão, preencha os campos.');
+        }
+    }); // fim -- configurações de envio -- abrir chamado --
 });
+
+// inicio -- endereço do cliente -- abrir-chamado -------------------------------------------------------------------------------------------------------
+function getDadosEnderecoPorCEP(cep) {
+    let url = 'https://viacep.com.br/ws/'+cep+'/json/unicode/'
+    let xmlHttp = new XMLHttpRequest()
+    xmlHttp.open('GET', url)
+    xmlHttp.onreadystatechange = () => {
+        if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            let dadosJSONText = xmlHttp.responseText
+            let dadosJSONObj = JSON.parse(dadosJSONText)
+            document.getElementById('endereco').value = dadosJSONObj.logradouro
+            document.getElementById('bairro').value = dadosJSONObj.bairro
+            document.getElementById('cidade').value = dadosJSONObj.localidade
+            document.getElementById('uf').value = dadosJSONObj.uf            
+        }
+    }
+
+    xmlHttp.send()
+}
+// fim -- endereço do cliente --

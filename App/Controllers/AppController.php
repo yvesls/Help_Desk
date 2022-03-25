@@ -58,6 +58,11 @@ class AppController extends Action {
 		$dados = $conexaoChamado->getAdm();
 		$this->view->adm = $dados;
 
+		// para chamar o registra endereço apenas uma vez
+		$conexaoChamado = Container::getModel('Chamado');
+		$dados = $conexaoChamado->verificaSeExisteEnderecoCad($_SESSION['nome']);
+		$this->view->primeiroChamado = $dados;
+
 		$this->render('abrir_chamado', 'layout1');
 	}
 
@@ -66,14 +71,21 @@ class AppController extends Action {
 		$this->validaAutenticacao();
 
 		$chamado = Container::getModel('Chamado'); // instancia e inicia uma conexão com bd
-		
-
-		$chamado->__set('nome', $_SESSION['nome']);
 		// atribuindo os valores para registro no banco via post
+		$chamado->__set('nome', $_SESSION['nome']);
 		$chamado->__set('categoria', $_POST['categoria']);
 		$chamado->__set('titulo', $_POST['titulo']);
 		$chamado->__set('descricao', $_POST['descricao']);
 		
+		$chamado->__set('cep', $_POST['cep']);
+		$chamado->__set('endereco', $_POST['endereco']);
+		$chamado->__set('bairro', $_POST['bairro']);
+		$chamado->__set('cidade', $_POST['cidade']);
+		$chamado->__set('uf', $_POST['uf']);
+		$chamado->__set('complemento', $_POST['complemento']);
+
+		$chamado->salvar_endereco();
+
 		if($chamado->__get('categoria') != '' && $chamado->__get('titulo') != '' && $chamado->__get('descricao') != ''){
 			$chamado->salvar_chamado();
 			
@@ -92,6 +104,10 @@ class AppController extends Action {
 			);
 			$this->render('abrir_chamado', 'layout1');
 		}
+
+		
+		
+		
 	}
 
 	public function consultar_chamado() {

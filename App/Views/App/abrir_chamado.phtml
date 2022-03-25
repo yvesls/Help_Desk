@@ -12,13 +12,13 @@
                   <form method="post" action="/registra_chamado">
                     <div class="form-group">
                       <label>Título</label>
-                      <input name="titulo" type="text" class="form-control" placeholder="Título">
+                      <input name="titulo" type="text" class="form-control" placeholder="Título" id="titulo">
                     </div>
                     
                     <div class="form-group">
                       <label>Categoria</label>
-                      <select name="categoria" class="form-control">
-                        <option>Criação Usuário</option>
+                      <select name="categoria" class="form-control" id="categoria_chamado">
+                        <option>Tipo de problema</option>
                         <option>Impressora</option>
                         <option>Hardware</option>
                         <option>Software</option>
@@ -29,7 +29,7 @@
                     
                     <div class="form-group">
                       <label>Descrição</label>
-                      <textarea name="descricao" class="form-control" rows="3"></textarea>
+                      <textarea name="descricao" class="form-control" rows="3" id="descricao"></textarea>
                     </div>
                     <? if($this->view->abrir) { ?>
                       <div class="row">
@@ -38,13 +38,47 @@
                         </div>
                       </div>
                     <? } ?>
+                    <? if($this->view->primeiroChamado[0] == 0) {?>
+                      <div class="row">
+                        <p class="p-3 text-center">Como é seu primeiro chamado, é necessário preencher o campo de endereço para que possamos encontrá-lo e, assim, realizar o serviço o mais rápido possível.</p>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col-sm-3">
+                          <input type="text" maxlength="8" class="form-control" name="cep" placeholder="CEP" onblur="getDadosEnderecoPorCEP(this.value)"/>
+                        </div>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" name="endereco" placeholder="Endereço" readonly id="endereco" />
+                        </div>
+			                </div>
+                      <div class="row form-group">
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" name="bairro" placeholder="Bairro" readonly id="bairro" />
+                        </div>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" name="cidade" placeholder="Cidade" readonly id="cidade" />
+                        </div>
+
+                        <div class="col-sm-2">
+                          <input type="text" class="form-control" name="uf" placeholder="UF" readonly id="uf" />
+                        </div>
+                      </div>
+                      <div class="row form-group">
+                        <div class="col-12">
+                          <input type="text" class="form-control" maxlength="50" name="complemento" placeholder="Complemento" id="complemento"/>
+                        </div>
+                        <div class="d-none">
+                          <input type="text" name="nome" value="<?= $_SESSION['nome'] ?>"/>
+                        </div>
+                      </div>
+                    <?}?>
                     <div class="row mt-5">
                       <div class="col-6">
                         <a class="btn btn-lg btn-warning btn-block" href="/home">Voltar</a>
                       </div>
 
                       <div class="col-6">
-                        <button class="btn btn-lg btn-info btn-block" type="submit">Abrir</button>
+                        <button class="btn-abrir btn btn-lg btn-info btn-block" type="submit" disabled>Abrir</button>
+                        <br><p class="text-danger preencher-corretamente-aviso m-0 p-0 text-center">Para liberar o botão, preencha os campos.</p>
                       </div>
                     </div>
                   </form>
@@ -54,7 +88,8 @@
         </div>
         <div class="col-6 col-md-4 col-xl-3 comunicacao">
           <?php foreach($this->view->adm as $key=>$dados){ ?>
-            <input class="col-1 btn-chat-cliente" value="<?=$dados['nome']?>"></input>
+            <input class="col-1 btn-chat-cliente btn" value="administrador"/>
+            <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
           <? } ?>
 
           <div class="chat bg-light rounded">
@@ -72,7 +107,7 @@
               <form>
 		            <input class="d-none input-nome" type="text" name="nome" value="<?= $_SESSION['nome'] ?>">
                 <input class="d-none input-destino" type="text" name="nome" value="administrador">
-                <input type="text" name="mensagem" class="form-control input-conversa m-0 p-0 col-8" placeholder="mensagem">
+                <input type="text" name="mensagem" class="form-control input-conversa m-0 pl-3 col-8" placeholder="mensagem">
                 <input class="col-3 input-enviar " type="submit" value="Enviar">
               </form>
             </div>
