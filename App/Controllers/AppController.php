@@ -149,6 +149,27 @@ class AppController extends Action {
 		$this->render('consultar_chamado_adm', 'layout1');
 	}
 
+	public function enderecos() {
+
+		$this->validaAutenticacao();
+		
+		$conexaoChamado = Container::getModel('Chamado');
+		
+		$dados = $conexaoChamado->consultarEnderecos();
+		// echo '<pre>';
+		// print_r($dados);
+		// echo '</pre>';
+		$this->view->dadosEndereco = $dados;
+
+		$conexaoClientes = Container::getModel('Usuario');
+
+		$clientes = $conexaoClientes->getClientes();
+
+		$this->view->clientes = $clientes;
+		
+		$this->render('enderecos', 'layout1');
+	}
+
 	public function consultar_chamados_realizados_adm(){
 
 		$this->validaAutenticacao();

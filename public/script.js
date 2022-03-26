@@ -208,7 +208,7 @@ $(document).ready(() => {
     });
     // fim -- configurações das chamadas -- 
     // inicio das configurações do chat ---------------------------------------------------------------------------------------------------------------------------------
-
+    
     // envia mensagem para o banco de dados
     $(".input-enviar").on("click", (e)=>{
         e.preventDefault();
@@ -240,7 +240,28 @@ $(document).ready(() => {
     $(".chat-pessoal").css('display', 'none');
     $(".input-conversa").val('');
     let cont = 1;
+    
     // manda mensagem
+       // chama a função ajax que recupera os dados da comunicação a cada 200 milésimos de segundo -- chat --  
+    $(".nomes-chat").on("click", ()=>{
+        const chamaAjax = setInterval(timeAjax, 200);
+        function timeAjax(){ajax()};
+        
+        $(".fecha-conversa").on("click", ()=>{
+            clearInterval(chamaAjax);
+        });
+    });
+
+    $(".btn-chat-cliente").on("click", ()=>{
+        const chamaAjax = setInterval(timeAjax, 200);
+        function timeAjax(){ajax()};
+        
+        $(".fecha-conversa").on("click", ()=>{
+            clearInterval(chamaAjax);
+        });
+    }); 
+    
+
     function ajax(){
         var req = new XMLHttpRequest();
         req.onreadystatechange = function(){
@@ -314,10 +335,7 @@ $(document).ready(() => {
     }
    
     // Verificação de qual aplicação será aplicada para o chat ----------------------------------------------------------------------------------------------------------------------------------
-
-    // chama a função ajax que recupera os dados da comunicação a cada 200 milésimos de segundo -- chat --
-    setInterval(function(){ajax();}, 200);
-
+    
     // verifica se o usuário é o administrador. Caso seja, o chat exibirá todos os clientes do usuário -- chat --
     if($(".input-nome").val() == "administrador"){ // para o adm mostra todos
         console.log('adm')
@@ -441,6 +459,25 @@ $(document).ready(() => {
             $('.preencher-corretamente-aviso').html('Para liberar o botão, preencha os campos.');
         }
     }); // fim -- configurações de envio -- abrir chamado --
+    
+    // inicio -- menu burguer -- 
+    $('.menu-hamburguer').on('click', function(){
+        $('.menu-content').css('right', '0');
+        $('.menu-content').css('transition', 'right 0.5s');
+        $('.menu-hamburguer').css('right', '-3vw');
+        $('.menu-hamburguer-fechar').css('right', '1vw');
+        $('.menu-hamburguer').css('transition', 'right 0.3s');
+        $('.menu-hamburguer-fechar').css('transition', 'right 0.3s');
+    });
+    $('.menu-hamburguer-fechar').on('click', function(){
+        $('.menu-content').css('right', '-300px');
+        $('.menu-content').css('transition', 'right 0.5s');
+        $('.menu-hamburguer').css('right', '1vw');
+        $('.menu-hamburguer-fechar').css('right', '-3vw');
+        $('.menu-hamburguer-fechar').css('transition', 'right 0.3s');
+        $('.menu-hamburguer').css('transition', 'right 0.3s');
+    });
+    
 });
 
 // inicio -- endereço do cliente -- abrir-chamado -------------------------------------------------------------------------------------------------------

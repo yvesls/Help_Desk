@@ -149,6 +149,15 @@ class Chamado extends Model {
 
 		return $this;
 	}
+
+	public function consultarEnderecos(){
+
+		$query = "select nome_usuario, cep, endereco, bairro, cidade, UF, complemento from tb_endereco";
+		$stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
 }
 
 ?>

@@ -105,6 +105,12 @@
                 'action' => 'recuperaComunicacao'
             );
 
+            $routes['enderecos'] = array(
+                'route' => '/enderecos',
+                'controller' => 'AppController',
+                'action' => 'enderecos'
+            );
+
             $routes['sair'] = array(
                 'route' => '/sair',
                 'controller' => 'AuthController',

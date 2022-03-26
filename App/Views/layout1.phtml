@@ -12,22 +12,40 @@
   </head>
 
   <body>
-
-  <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">
+    <nav class="navbar navbar-dark bg-dark position-fixed">
+      <a class="navbar-brand" href="/home">
         <img src="logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
         App Help Desk
       </a>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="/sair">
-            SAIR
-          </a>
-        </li>
-      </ul>
+      
+      <div class="nav-side-menu">
+		    <i class="fa fa-bars fa-2x menu-hamburguer"></i>
+        <i class="fas fa-times fa-2x menu-hamburguer-fechar"></i>
+		      <div class="menu-content position-fixed bg-dark">
+		            <ul class="menu-escolhas">
+                  <?if($_SESSION['nome'] == 'administrador') {?>
+		                <li>
+		                  <a href="/enderecos" class="nav-link">Endereços</a>
+		                </li>
+		                <li>
+		                  <a href="/dashboard" class="nav-link">Dashboard de clientes</a>
+		                </li>
+                  <? }else{ ?>
+                    <li>
+		                  <a href="/dados_cliente" class="nav-link">Meus dados</a>
+		                </li>
+                  <? }?>
+                    <li>
+		                  <a class="nav-link" href="/sair">Sair</a>
+		                </li>
+		            </ul>
+		      </div>
+		  </div>
     </nav>
-
+    
     <?= $this->content() ?>
+
+    
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

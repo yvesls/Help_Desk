@@ -86,6 +86,73 @@ body {
     left: 20px;
 }
 
+/* configurações do menu ----------------------------------------------------------------------------------------------------------------------*/
+a, a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+.navbar {
+    width: 100vw;
+    top: 0;
+    z-index: 5;
+}
+
+.menu-hamburguer, .menu-hamburguer-fechar {
+    position: fixed;
+    top: 1.5vh;
+    right: 1vw;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.menu-hamburguer-fechar{
+    right: -3vw;
+}
+
+
+.menu-escolhas {
+    margin-top: 20vh;
+    display: grid;
+    place-items: center;
+}
+
+.menu-escolhas li {
+    padding: 0 2px;
+    margin: 2px 0;
+    margin-right: 20px;
+    width: 200px;
+    background-color: #8f8f8f;
+    border-radius: 25px;
+}
+
+.menu-escolhas li a {
+    color: #ffffff;
+}
+
+.menu-escolhas li:hover {
+    color: white;
+    background-color: #18A2B8;
+}
+
+.menu-content {
+    position: absolute;
+    right: -300px;
+    top: 0;
+    padding-top: 2vh;
+    width: 300px;
+    height: 100vh;
+    z-index: 2;
+}
+
+.menu-content-ativo {
+    right: 0vw;
+    transition: right 1s;
+}
 /* configurações de comunicação (chat) ----------------------------------------------------------------------------------------------------------*/
 .comunicacao {
     position: fixed;
@@ -103,7 +170,7 @@ body {
     background-color: #00b4b100;
     padding: 9px;
     color: #006f9700;
-    z-index: 2;
+    z-index: 1;
 }
 
 .btn-chat img:hover, .btn-chat-cliente img:hover {
@@ -116,6 +183,7 @@ body {
 .btn-chat-cliente {
     cursor: pointer;
     text-indent: -300px;
+    z-index: 2;
 }
 
 .img-chat {
