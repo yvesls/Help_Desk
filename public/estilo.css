@@ -317,26 +317,47 @@ input[type=button]:hover {
     bottom: 10vh;
     top: 1.2vh;
     left: 1.2vw;
+    height: 0;
+    width: 95%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+    color: rgb(58, 58, 58);
+    word-break: break-all;
+    padding: 0px 10px;
+    z-index: 1;
+}
+
+.areaAuto {
+    background-color: white;
+    border: 1px solid #D9DADB;
+    border-top: 0;
+    border-radius: 0 0 5px 5px;
+    position: absolute;
+    bottom: 50px;
+    left: 1.2vw;
+    top: 1.2vh;
     height: 49.5vh;
     width: 95%;
     overflow-y: scroll;
     display: flex;
     flex-direction: column-reverse;
-    color: rgb(92, 92, 92);
+    color: rgb(58, 58, 58);
     word-break: break-all;
     padding: 0px 10px;
+    z-index: 2;
 }
 
-.conversa::-webkit-scrollbar {
+.conversa::-webkit-scrollbar, .areaAuto::-webkit-scrollbar {
     width: 5px;
     background-color: #ffffff;
 }
 
-.conversa::-webkit-scrollbar-thumb {
+.conversa::-webkit-scrollbar-thumb, .areaAuto::-webkit-scrollbar-thumb {
     background-color: #18A2B8; 
 }
 
-.conversa::-webkit-scrollbar-track {
+.conversa::-webkit-scrollbar-track, .areaAuto::-webkit-scrollbar-track  {
     position: relative;
     right: 0px;
     background-color: whitesmoke;

@@ -210,32 +210,120 @@ $(document).ready(() => {
     // inicio das configurações do chat ---------------------------------------------------------------------------------------------------------------------------------
     
     // envia mensagem para o banco de dados
-    $(".input-enviar").on("click", (e)=>{
-        e.preventDefault();
-        let mensagem = $('.input-conversa').val();
-        let nome = $('.input-nome').val();
-        let destinatario = $('.input-destino').val();
-        let concatenaMensagem = nome+'Er32'+destinatario+'Er32'+mensagem;
- 
-        $.ajax({ // realiza uma requisição para o servidor
-            // busca no servidor por via get
-            type: 'POST', 
-            // url da página que interage com o servidor
-            url: '/comunicacao',
-            // envia os dados que serão parametros para busca no servidor (neste caso a data)
-            data: 'msg=' + concatenaMensagem, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
-            dataType: 'text',// modifica o tipo de retorno (padrao html)
-            success: dados => {
+    let tipoDeInteracao = 1;
+
+    if(tipoDeInteracao == 1 && $('.input-nome').val() != 'administrador'){
+        let areaMsgAuto = document.createElement('div');
+        $(areaMsgAuto).addClass("areaAuto");
+        $('.chat-pessoal').prepend(areaMsgAuto);
+
+        function* conversar() {             
+            //escopo próprio
+            // opcao
+            //1 bloco
+            let opcao = yield 'Olá, sou o bot responsável por ajudá-lo a entender nossa aplicação. <br> - Para acessar o guia, digite 1.<br> - Se quiser falar diretamente com o técnico, digite 2.'
+            //2 bloco
+            //o parâmetro enviado no next
+            if(opcao == '2') {
+
+                opcao = yield 'Ótimo! O técnico entrará em contado em um instante. Nesse meio tempo,<br> gostaria de ouvir uma piada? digite (s) para sim e (n) para não'
+
+                if(opcao == 's' || opcao == 'S') {
+                    
+                    fetch('dados/piadas.json') // função nativa que faz requisição
+                        .then(resposta => resposta.json()) // etapa de execução que recebe a resposta em formato json
+                        .then(piadas => { // segunda etapa de execução 
+                            let idx = Math.floor((Math.random() * 10))
+                            let piada = piadas[idx]
+                            
+                            let msgAuto = document.createElement('div');
+                            $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 0').css('background-color', '#18A2B8').css('color', 'white').css('margin', '5px 5px');
+                            $(msgAuto).html(piada.piada);
+                            $(areaMsgAuto).prepend(msgAuto);
+
+                            setTimeout(() => {
+                                let msgAuto = document.createElement('div');
+                                $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 0').css('background-color', '#18A2B8').css('color', 'white').css('margin', '5px 5px');
+                                $(msgAuto).html(piada.resposta + '<br> kkkkkkkkk muito boa né!');
+                                $(areaMsgAuto).prepend(msgAuto);
+                                return true
+                            }, 4000)
+                            setTimeout(() => {
+                                acao()
+                            }, 8000)
+                        })
+                    yield ''
+                } 
                 
-            }, // mostra os dados de erro do back
-            error: function ( status, error)  {
-                alert('Deu erro na recuperação dos dados');
-                console.log(arguments);
-                console.log(status);
-                console.log(error.message);
+            } else {
+
+                opcao = yield '   Nosso site é responsável por facilitar a solicitação de conserto do seu dispositivo <br>(computador, celular, impressora, tablet, notbook, etc).<br>    Nele você realiza um chamado, que é uma solicitação de manutenção. Na aba <br> "abrir chamado", onde, ao preencher os campos, o chamado será arquivado <br>e o nosso técnico irá agendar a busca por esse canal assim que possível. <br>Qualquer dúvida é tirada por aqui. Atendemos a domicílio e o pagamento pode <br>ser combinado aqui mas só será realizado pessoalmente (para sua segurança). <br> <br> Digite 1 para sair.'
+                
             }
-        }); 
-    });   
+            if(opcao != '1'){
+                return 'Aguarde até que um técnico entre em contato. Levará um instante.'
+            }
+        }
+        
+        let conversa = conversar() //objeto iterator
+        acao();
+        function acao() {
+            let resposta = $('.input-conversa').val();
+            console.log(resposta)
+            let interacao = conversa.next(resposta)
+            
+            let msgAuto = document.createElement('div');
+            $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 10px').css('background-color', '#18A2B8').css('color', 'white').css('margin', '5px 5px');
+            
+            console.log(interacao.value)
+            if(interacao.value != ''){
+                $(msgAuto).html(interacao.value);
+                $(areaMsgAuto).prepend(msgAuto);
+            }
+            if(interacao.done) {
+                setTimeout(() => {
+                    $('.conversa').css('height', '49.5vh');
+                    $('.areaAuto').css('height', '0').css('display', 'none');
+                    console.log('fim')
+                    tipoDeInteracao = 2;
+                }, 2000)
+            }
+        }
+        $('.input-enviar').delay(500).click(function() {
+            acao();
+        });
+    }else {
+        if($('.input-nome').val() == 'administrador'){
+            $('.conversa').css('height', '49.5vh');
+            $('.areaAuto').css('height', '0').css('display', 'none');
+        }
+        $(".input-enviar").on("click", (e)=>{
+            e.preventDefault();
+            let mensagem = $('.input-conversa').val();
+            let nome = $('.input-nome').val();
+            let destinatario = $('.input-destino').val();
+            let concatenaMensagem = nome+'Er32'+destinatario+'Er32'+mensagem;
+    
+            $.ajax({ // realiza uma requisição para o servidor
+                // busca no servidor por via get
+                type: 'POST', 
+                // url da página que interage com o servidor
+                url: '/comunicacao',
+                // envia os dados que serão parametros para busca no servidor (neste caso a data)
+                data: 'msg=' + concatenaMensagem, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+                dataType: 'text',// modifica o tipo de retorno (padrao html)
+                success: dados => {
+                    
+                }, // mostra os dados de erro do back
+                error: function ( status, error)  {
+                    alert('Deu erro na recuperação dos dados');
+                    console.log(arguments);
+                    console.log(status);
+                    console.log(error.message);
+                }
+            }); 
+        });   
+    }
     
     $(".chat-pessoal").css('display', 'none');
     $(".input-conversa").val('');
@@ -437,16 +525,6 @@ $(document).ready(() => {
             $(".img-chat").css("display", 'block');
         });
     }
-    // limpa campo após enviar mensagem
-
-    $('.input-enviar').on('click', function(){
-        $('.input-conversa').delay(500).val('');
-    });
-    $('.input-conversa').keypress(function(event){
-        if ( event.value == 13 ) {
-            $('.input-conversa').delay(500).val('');
-         }
-    });
 
     // fim -- configurações dos chats --
     // inicio -- configurações de envio -- abrir chamado --
@@ -477,7 +555,17 @@ $(document).ready(() => {
         $('.menu-hamburguer-fechar').css('transition', 'right 0.3s');
         $('.menu-hamburguer').css('transition', 'right 0.3s');
     });
-    
+
+    // limpa campo após enviar mensagem
+
+    $('.input-enviar').on('click', function(){
+        $('.input-conversa').delay(500).val('');
+    });
+    $('.input-conversa').keypress(function(event){
+        if ( event.value == 13 ) {
+            $('.input-conversa').delay(500).val('');
+         }
+    });
 });
 
 // inicio -- endereço do cliente -- abrir-chamado -------------------------------------------------------------------------------------------------------
