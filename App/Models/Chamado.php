@@ -158,6 +158,54 @@ class Chamado extends Model {
 
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
+
+	public function consultaNumChamadosPendentes() { // retorna os dados de vendas de vendas
+
+		$query = '
+			select 
+				count(*) as id 
+			from 
+				tb_chamados
+			where
+			status = "pendente"';
+
+		$stmt = $this->db->prepare($query);
+		$stmt->execute();
+
+		return $stmt->fetch();
+	}
+
+	public function consultaNumChamados() { // retorna os dados de vendas de vendas
+		
+		$query = '
+			select 
+				count(*) as id
+			from 
+				tb_chamados
+			where
+			id != 1';
+
+		$stmt = $this->db->prepare($query);
+		$stmt->execute();
+
+		return $stmt->fetch();
+	}
+
+	public function consultaNumClientes() { // retorna os dados de vendas de vendas
+
+		$query = '
+			select 
+				count(*) as id 
+			from 
+				usuarios
+			where
+			id != 9';
+
+		$stmt = $this->db->prepare($query);
+		$stmt->execute();
+
+		return $stmt->fetch();
+	}
 }
 
 ?>

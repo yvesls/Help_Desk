@@ -210,13 +210,12 @@ $(document).ready(() => {
     // inicio das configurações do chat ---------------------------------------------------------------------------------------------------------------------------------
     
     // envia mensagem para o banco de dados
-    let tipoDeInteracao = 1;
-
-    if(tipoDeInteracao == 1 && $('.input-nome').val() != 'administrador'){
+    if($('.input-nome').val() != 'administrador'){
+        $('.input-enviar').css('display', 'none');
+        $('.input-conversa').css('display', 'none');
         let areaMsgAuto = document.createElement('div');
         $(areaMsgAuto).addClass("areaAuto");
         $('.chat-pessoal').prepend(areaMsgAuto);
-
         function* conversar() {             
             //escopo próprio
             // opcao
@@ -253,29 +252,27 @@ $(document).ready(() => {
                             }, 8000)
                         })
                     yield ''
-                } 
-                
+                }     
+                    
             } else {
-
+    
                 opcao = yield '   Nosso site é responsável por facilitar a solicitação de conserto do seu dispositivo <br>(computador, celular, impressora, tablet, notbook, etc).<br>    Nele você realiza um chamado, que é uma solicitação de manutenção. Na aba <br> "abrir chamado", onde, ao preencher os campos, o chamado será arquivado <br>e o nosso técnico irá agendar a busca por esse canal assim que possível. <br>Qualquer dúvida é tirada por aqui. Atendemos a domicílio e o pagamento pode <br>ser combinado aqui mas só será realizado pessoalmente (para sua segurança). <br> <br> Digite 1 para sair.'
-                
+                    
             }
             if(opcao != '1'){
                 return 'Aguarde até que um técnico entre em contato. Levará um instante.'
             }
         }
-        
+            
         let conversa = conversar() //objeto iterator
         acao();
         function acao() {
-            let resposta = $('.input-conversa').val();
-            console.log(resposta)
+            let resposta = $('.input-conversa-bot').val();
             let interacao = conversa.next(resposta)
-            
+            $('.input-conversa-bot').val('');
             let msgAuto = document.createElement('div');
             $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 10px').css('background-color', '#18A2B8').css('color', 'white').css('margin', '5px 5px');
             
-            console.log(interacao.value)
             if(interacao.value != ''){
                 $(msgAuto).html(interacao.value);
                 $(areaMsgAuto).prepend(msgAuto);
@@ -284,47 +281,51 @@ $(document).ready(() => {
                 setTimeout(() => {
                     $('.conversa').css('height', '49.5vh');
                     $('.areaAuto').css('height', '0').css('display', 'none');
-                    console.log('fim')
-                    tipoDeInteracao = 2;
+                    $('.input-enviar-bot').css('display', 'none');
+                    $('.input-conversa-bot').css('display', 'none');
+                    $('.input-enviar').css('display', 'block');
+                    $('.input-conversa').css('display', 'block');
                 }, 2000)
             }
         }
-        $('.input-enviar').delay(500).click(function() {
+        $('.input-enviar-bot').delay(500).click(function() {
             acao();
         });
-    }else {
-        if($('.input-nome').val() == 'administrador'){
-            $('.conversa').css('height', '49.5vh');
-            $('.areaAuto').css('height', '0').css('display', 'none');
-        }
-        $(".input-enviar").on("click", (e)=>{
-            e.preventDefault();
-            let mensagem = $('.input-conversa').val();
-            let nome = $('.input-nome').val();
-            let destinatario = $('.input-destino').val();
-            let concatenaMensagem = nome+'Er32'+destinatario+'Er32'+mensagem;
-    
-            $.ajax({ // realiza uma requisição para o servidor
-                // busca no servidor por via get
-                type: 'POST', 
-                // url da página que interage com o servidor
-                url: '/comunicacao',
-                // envia os dados que serão parametros para busca no servidor (neste caso a data)
-                data: 'msg=' + concatenaMensagem, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
-                dataType: 'text',// modifica o tipo de retorno (padrao html)
-                success: dados => {
-                    
-                }, // mostra os dados de erro do back
-                error: function ( status, error)  {
-                    alert('Deu erro na recuperação dos dados');
-                    console.log(arguments);
-                    console.log(status);
-                    console.log(error.message);
-                }
-            }); 
-        });   
+    }else{
+        $('.conversa').css('height', '49.5vh');
+        $('.input-enviar-bot').css('display', 'none');
+        $('.input-conversa-bot').css('display', 'none');
+        $('.input-enviar').css('display', 'block');
+        $('.input-conversa').css('display', 'block');
     }
+    $(".input-enviar").on("click", (e)=>{
+        e.preventDefault();
+        let mensagem = $('.input-conversa').val();
+        let nome = $('.input-nome').val();     
+        let destinatario = $('.input-destino').val();
+        
+        let concatenaMensagem = nome+'Er32'+destinatario+'Er32'+mensagem;
     
+        $.ajax({ // realiza uma requisição para o servidor
+            // busca no servidor por via get
+            type: 'POST', 
+            // url da página que interage com o servidor
+            url: '/comunicacao',
+            // envia os dados que serão parametros para busca no servidor (neste caso a data)
+            data: 'msg=' + concatenaMensagem, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+            dataType: 'text',// modifica o tipo de retorno (padrao html)
+            success: dados => {
+                    
+            }, // mostra os dados de erro do back
+            error: function ( status, error)  {
+                alert('Deu erro na recuperação dos dados');
+                console.log(arguments);
+                console.log(status);
+                console.log(error.message);
+            }
+        }); 
+    }); 
+
     $(".chat-pessoal").css('display', 'none');
     $(".input-conversa").val('');
     let cont = 1;

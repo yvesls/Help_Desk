@@ -104,10 +104,6 @@ class AppController extends Action {
 			);
 			$this->render('abrir_chamado', 'layout1');
 		}
-
-		
-		
-		
 	}
 
 	public function consultar_chamado() {
@@ -168,6 +164,29 @@ class AppController extends Action {
 		$this->view->clientes = $clientes;
 		
 		$this->render('enderecos', 'layout1');
+	}
+
+	public function dashboard() {
+
+		$this->validaAutenticacao();
+		
+		$conexaoChamado = Container::getModel('Chamado');
+		
+		$numChamPen = $conexaoChamado->consultaNumChamadosPendentes();
+		$numCham = $conexaoChamado->consultaNumChamados();
+		$numClientes = $conexaoChamado->consultaNumClientes();
+		
+		$this->view->numChamPen = $numChamPen;
+		$this->view->numCham = $numCham;
+		$this->view->numClientes = $numClientes;
+
+		$conexaoClientes = Container::getModel('Usuario');
+
+		$clientes = $conexaoClientes->getClientes();
+
+		$this->view->clientes = $clientes;
+		
+		$this->render('dashboard', 'layout1');
 	}
 
 	public function consultar_chamados_realizados_adm(){

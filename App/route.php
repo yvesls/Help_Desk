@@ -111,6 +111,12 @@
                 'action' => 'enderecos'
             );
 
+            $routes['dashboard'] = array(
+                'route' => '/dashboard',
+                'controller' => 'AppController',
+                'action' => 'dashboard'
+            );
+
             $routes['sair'] = array(
                 'route' => '/sair',
                 'controller' => 'AuthController',
