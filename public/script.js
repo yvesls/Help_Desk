@@ -513,7 +513,6 @@ $(document).ready(() => {
                     console.log(error.message);
                 }
             }); 
-    
         });
         
         // botão fecha a conversa -- chat --
@@ -571,7 +570,7 @@ $(document).ready(() => {
 
 // inicio -- endereço do cliente -- abrir-chamado -------------------------------------------------------------------------------------------------------
 function getDadosEnderecoPorCEP(cep) {
-    let url = 'https://viacep.com.br/ws/'+cep+'/json/unicode/'
+    let url = 'https://viacep.com.br/ws/'+cep+'/json/'
     let xmlHttp = new XMLHttpRequest()
     xmlHttp.open('GET', url)
     xmlHttp.onreadystatechange = () => {
@@ -588,3 +587,4 @@ function getDadosEnderecoPorCEP(cep) {
     xmlHttp.send()
 }
 // fim -- endereço do cliente --
+
