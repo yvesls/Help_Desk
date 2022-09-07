@@ -1,12 +1,14 @@
-<div  onload="ajax()" class="container d-flex justify-content-center" style="padding-top: 5%;">    
+<div class="container d-flex justify-content-center" style="padding-top: 5%;">    
         <div class="col-md-8 mt-3 card-consultar-chamado">
           <div class="card">
             <div class="card-header">
               <p class="pt-2 m-0 col-5 float-left">Consulta de chamados</p>
               <select id="nome" class="form-control p-0 m-0 col-3 float-left">
                 <option>Clientes</option>
-                <?php foreach($this->view->clientes as $key=>$dados){ ?>
-                  <option><?= $dados['nome'] ?></option>
+                
+                <? $cont = 1;
+                  while ($cont != $this->view->clientes){?>
+                    <option><?= $this->view->clientes['nome'] ?></option>
                 <? } ?>
               </select>
               <div class="col-1 float-left"></div>
@@ -21,13 +23,13 @@
             </div>
             <div class="card-body">
               <div class="todosClientes position-relative">
-                <?php $possui_dados_ainda = 0; foreach($this->view->dadosChamado as $key=>$dados){ 
+                <?php $possui_dados_ainda = 0; foreach($this->view->dadosChamado as &$dados){ 
                           if($dados['status'] == 'pendente'){
                               $possui_dados_ainda += 1;
                           }
                       }
                 ?>
-                <?php if($possui_dados_ainda != 0){ foreach($this->view->dadosChamado as $key=>$dados){ ?>
+                <?php if($possui_dados_ainda != 0){ foreach($this->view->dadosChamado as &$dados){ ?>
                   <div class="scrollRevela card mb-3 bg-light position-relative">
                     <div class="card-body pb-0 m-0">
                         <p class="card-subtitle font-italic float-right position-relative p-0 mb-xl-0 mb-4 relative-name-adm"><?= $dados['nome'] ?></p>
@@ -44,13 +46,13 @@
                         </div>     
                     </div>
                   </div>
-                  <? }
+                  <?php }
                   }else{ ?>
                     <div class="py-5 text-center d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao">
                       <h2>Nenhum cliente possui pedidos no momento.</h2>
                     </div>
                    
-                  <? } ?>
+                  <?php } ?>
               </div>
               <span class="clienteAtual">
 
@@ -77,12 +79,12 @@
               <small class="text-info">Chat</small>
               <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
             </div>
-            
-            <?php foreach($this->view->clientes as $key=>$dados){ ?>
+
+            <?php foreach($this->view->clientes as $key => $dados) { ?>
               <div class=" text-center p-0 m-0 chat-clientes">
-                <input type="button" class="col-12 m-0 py-3 nomes-chat" value="<?=$dados['nome']?>">
+                <input type="button" class="col-12 m-0 py-3 nomes-chat" value="<?= $dados['nome']?>">
               </div>
-            <? } ?>
+            <?php } ?>
             
             <div class="col-12 h-100 chat-pessoal">
               <div class="conversa-nomeCliente"></div>
@@ -94,7 +96,7 @@
 		            <input class="d-none input-nome" type="text" name="nome" value="administrador">
                 <input class="d-none input-destino" type="text" name="nome" value="">
                 <input type="text" name="mensagem" class="form-control input-conversa m-0 pl-3 col-8" placeholder="mensagem">
-                <input class="col-3 input-enviar " type="submit" value="Enviar">
+                <input class="col-3 input-enviar" type="submit" value="Enviar">
               </form>
               
             </div>

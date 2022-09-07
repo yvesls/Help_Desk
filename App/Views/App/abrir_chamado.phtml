@@ -1,6 +1,6 @@
 
     <div class="container d-flex justify-content-center" style="padding-top: 5%;">    
-
+      <span class="d-none" id="temEndereco"><?=!$this->view->primeiroChamado?></span>
       <div class="col-md-8 mt-3 card-abrir-chamado">
           <div class="card">
             <div class="card-header">
@@ -31,14 +31,14 @@
                       <label>Descrição</label>
                       <textarea name="descricao" class="form-control" rows="3" id="descricao"></textarea>
                     </div>
-                    <? if($this->view->abrir) { ?>
+                    <?php if($this->view->abrir) { ?>
                       <div class="row">
                         <div class="col">
                           <span class="text text-danger animate__animated animate__headShake position-absolute">Preencha todos os campos.</span>
                         </div>
                       </div>
-                    <? } ?>
-                    <? if($this->view->primeiroChamado[0] == 0) {?>
+                    <?php } ?>
+                    <?php if(!$this->view->primeiroChamado) { ?>
                       <div class="row">
                         <p class="p-3 text-center">Como é seu primeiro chamado, é necessário preencher o campo de endereço para que possamos encontrá-lo e, assim, realizar o serviço o mais rápido possível.</p>
                       </div>
@@ -70,7 +70,7 @@
                           <input type="text" name="nome" value="<?= $_SESSION['nome'] ?>"/>
                         </div>
                       </div>
-                    <?}?>
+                    <?php }?>
                     <div class="row mt-5">
                       <div class="col-6">
                         <a class="btn btn-lg btn-warning btn-block" href="/home">Voltar</a>
@@ -78,7 +78,7 @@
 
                       <div class="col-6">
                         <button class="btn-abrir btn btn-lg btn-info btn-block" type="submit" disabled>Abrir</button>
-                        <br><p class="text-danger preencher-corretamente-aviso m-0 p-0 text-center">Para liberar o botão, preencha os campos.</p>
+                        <br><p class="text-danger preencher-corretamente-aviso m-0 p-0 text-center"></p>
                       </div>
                     </div>
                   </form>
@@ -87,10 +87,8 @@
             </div>
         </div>
         <div class="col-6 col-md-4 col-xl-3 comunicacao">
-          <?php foreach($this->view->adm as $key=>$dados){ ?>
-            <input class="col-1 btn-chat-cliente btn" value="administrador"/>
-            <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
-          <? } ?>
+          <input class="col-1 btn-chat-cliente btn" value="administrador"/>
+          <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
 
           <div class="chat bg-light rounded">
             <div class="bg-light text-center menu-chat">

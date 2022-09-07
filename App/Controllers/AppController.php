@@ -13,27 +13,24 @@ class AppController extends Action {
 	public function home() {
 
 		$this->validaAutenticacao();
-
-		if($_SESSION['senha'] == "adminadmin"){
-			$this->view->nome = $_SESSION['nome'];
-			$this->render('adm', 'layout1');
-		}	
-
 		// Dados CHamados
-		$conexaoChamado = Container::getModel('Chamado');	
-		$dados = $conexaoChamado->getChamados();
-		$this->view->dadosChamado = $dados;
+		// $conexaoChamado = Container::getModel('Chamado');	
+		// $dados = $conexaoChamado->getChamados();
+		// $this->view->dadosChamado = $dados;
 		
 		// Chat
 		$conexaoChamado = Container::getModel('Chamado');
 		$dados = $conexaoChamado->getAdm();
-		$this->view->adm = $dados;
-		
-		// protege a rota ( procurando se os dados foram preenchidos no processo de autenticação).
-		
 
-		$this->view->nome = $_SESSION['nome'];
-		$this->render('home', 'layout1');
+		if($_SESSION['senha'] == "admadm"){
+			$this->view->adm = $dados;
+			$this->view->nome = $_SESSION['nome'];
+			$this->render('adm', 'layout1');
+		} else {
+			$this->view->nome = $_SESSION['nome'];
+			// protege a rota ( procurando se os dados foram preenchidos no processo de autenticação).
+			$this->render('home', 'layout1');
+		}
 	}
 
 	public function abrir_chamado() {
@@ -50,19 +47,22 @@ class AppController extends Action {
 
 		// Dados CHamados
 		$conexaoChamado = Container::getModel('Chamado');	
-		$dados = $conexaoChamado->getChamados();
-		$this->view->dadosChamado = $dados;
+		$dados1 = $conexaoChamado->getChamados();
+		$this->view->dadosChamado = $dados1;
 		
 		// Chat
-		$conexaoChamado = Container::getModel('Chamado');
-		$dados = $conexaoChamado->getAdm();
-		$this->view->adm = $dados;
+		$dados2 = $conexaoChamado->getAdm();
+		$this->view->adm = $dados2;
 
 		// para chamar o registra endereço apenas uma vez
-		$conexaoChamado = Container::getModel('Chamado');
-		$dados = $conexaoChamado->verificaSeExisteEnderecoCad($_SESSION['nome']);
-		$this->view->primeiroChamado = $dados;
-
+		$dados3 = $conexaoChamado->verificaSeExisteEnderecoCad($_SESSION['nome']);
+		$this->view->primeiroChamado = $dados3;
+		 
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// print_r($dados3);
 		$this->render('abrir_chamado', 'layout1');
 	}
 
@@ -112,13 +112,19 @@ class AppController extends Action {
 
 		// Dados CHamados
 		$conexaoChamado = Container::getModel('Chamado');	
-		$dados = $conexaoChamado->getChamados();
-		$this->view->dadosChamado = $dados;
-		
+		$dados1 = $conexaoChamado->getChamados();
+		$this->view->dadosChamado = $dados1;
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// print_r($dados1);
 		// Chat
 		$conexaoChamado = Container::getModel('Chamado');
-		$dados = $conexaoChamado->getAdm();
-		$this->view->adm = $dados;
+		$dados2 = $conexaoChamado->getAdm();
+		$this->view->adm = $dados2;
+		// print_r($dados2);
 
 		$this->render('consultar_chamado', 'layout1');
 	}
@@ -130,16 +136,28 @@ class AppController extends Action {
 		$conexaoChamado = Container::getModel('Chamado');
 		
 		$dados = $conexaoChamado->getChamadosAdm();
+		
+		$this->view->dadosChamado = $dados;
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
 		// echo '<pre>';
 		// print_r($dados);
 		// echo '</pre>';
-		$this->view->dadosChamado = $dados;
-		
 		// resgata os nomes na busca por nomes
 		$conexaoClientes = Container::getModel('Usuario');
 
 		$clientes = $conexaoClientes->getClientes();
-
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<pre>';
+		// print_r($clientes[0]);
+		// echo '</pre>';
 		$this->view->clientes = $clientes;
 
 		$this->render('consultar_chamado_adm', 'layout1');
@@ -152,10 +170,16 @@ class AppController extends Action {
 		$conexaoChamado = Container::getModel('Chamado');
 		
 		$dados = $conexaoChamado->consultarEnderecos();
+		
+		$this->view->dadosEndereco = $dados;
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
 		// echo '<pre>';
 		// print_r($dados);
 		// echo '</pre>';
-		$this->view->dadosEndereco = $dados;
 
 		$conexaoClientes = Container::getModel('Usuario');
 
@@ -209,7 +233,14 @@ class AppController extends Action {
 		$dados = $conexaoChamado->getChamadosAdmPorNome($_POST['nome']);
 		$conexaoChamado->__set('dados', $dados);
 		$array = json_decode(json_encode($dados), true);
-		
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<br>';
+		// echo '<pre>';
+		// print_r($dados);
+		// echo '</pre>';
 		echo json_encode($dados);
 	}
 

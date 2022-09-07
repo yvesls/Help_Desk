@@ -24,24 +24,23 @@
                     <label class="bold" for="senha">Senha:</label>
                     <input name="senha" id="senha" type="password" class="form-control" placeholder="Senha">
                   </div>
-                  <? if($this->view->login == 'erro') { ?>
+                  <?php if($this->view->login == 'erro') { ?>
                     <div class="row">
                       <div class="col">
                       <span class="text text-danger animate__animated animate__headShake position-absolute">Email e/ou senha inválido(s)!</span>
                       </div>
                     </div>
-                  <? } ?>
-                  <? 
+                  <?php } ?>
+                  <?php
                     // fazendo novo teste: se erro2(ou seja, as páginas protegidas forem buscadas sem ter o acesso autenticado) ocorrer, chama essa página com essa mensagem
                     if(isset($_GET['login']) && $_GET['login'] == 'erro2'){ // verifica se o índice estã setado(ativo)
-
                   ?>
 
                   <div class="text-danger pb-3">
                     Autentifique a permissão antes de tentar acessar essa página protegida
                   </div>
 
-                  <? } ?> 
+                  <?php } ?> 
 
                   <button class="col-12 col-xl-7 btn btn-lg btn-info btn-block mb-3 position-relative mt-5" type="submit">Entrar</button>
                   <a class="m-0 p-0 col-12 col-xl-7 text-center text-info d-flex justify-content-center" href="/inscreverse">Não possui cadastro? Click Aqui.</a>

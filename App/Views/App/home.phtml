@@ -1,57 +1,57 @@
+
 <div class="container d-flex justify-content-center align-content-center column" style="padding-top: 15%;">    
-      <div class="row">
-        <div class="col-12 text-center mb-3">
-          <h2>Olá, <?= $this->view->nome?>! Encaminhe seu pedido ou consulte os já feitos.</h2>
-        </div>
-        <div class="col-12 card-home">
-          <div class="card">
-            <div class="card-header">
-              Menu
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-6 d-flex justify-content-center">
-                  <a class="pai1" href="/abrir_chamado">
-                    <img class="img-icon" src="../icons8-tarefa-96.png" width="96" height="96">
-                  </a>
-                </div>
-                <div class="col-6 d-flex justify-content-center">
-                  <a class="pai2" href="/consultar_chamado">
-                    <img class="img-icon2" src="../icons8-tarefa-concluída-96.png" width="96" height="96">
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-3 comunicacao">
-          <?php foreach($this->view->adm as $key=>$dados){ ?>
-            <input class="col-1 btn-chat-cliente btn" value="administrador"/>
-            <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
-          <? } ?>
-
-          <div class="chat bg-light rounded">
-            <div class="bg-light text-center menu-chat">
-              <small class="text-info">Chat</small>
-              <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
-            </div>
-            
-            <div class="col-12 h-100 chat-pessoal">
-              <div class="conversa-nomeCliente"></div>
-              <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
-              <div class="conversa m-0">
-
-              </div>
-              <form>
-		            <input class="d-none input-nome" type="text" name="nome" value="<?= $_SESSION['nome'] ?>">
-                <input class="d-none input-destino" type="text" name="nome" value="administrador">
-                
-                <input type="text" name="mensagem" class="form-control input-conversa m-0 pl-3 col-8" placeholder="mensagem">
-                <input class="col-3 input-enviar " type="submit" value="Enviar">
-              </form>
-              <input type="text" name="mensagem" class="form-control input-conversa-bot m-0 pl-3 col-8" placeholder="mensagem">
-              <input class="col-3 input-enviar-bot " type="submit" value="Enviar">
-            </div>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-12 text-center mb-3">
+      <h2>Olá, <?= $this->view->nome?>! Encaminhe seu pedido ou consulte os já feitos.</h2>
     </div>
+    <div class="col-12 card-home">
+      <div class="card">
+        <div class="card-header">
+          Menu
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+              <a class="pai1" href="/abrir_chamado">
+                <img class="img-icon" src="../icons8-tarefa-96.png" width="96" height="96">
+              </a>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+              <a class="pai2" href="/consultar_chamado">
+                <img class="img-icon2" src="../icons8-tarefa-concluída-96.png" width="96" height="96">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-3 comunicacao">
+      <input class="col-1 btn-chat-cliente btn" value="administrador"/>
+      <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
+      
+
+      <div class="chat bg-light rounded">
+        <div class="bg-light text-center menu-chat">
+          <small class="text-info">Chat</small>
+          <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
+        </div>
+            
+        <div class="col-12 h-100 chat-pessoal">
+          <div class="conversa-nomeCliente"></div>
+            <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
+          <div class="conversa m-0">
+
+        </div>
+        <form>
+		      <input class="d-none input-nome" type="text" name="nome" value="<?= $_SESSION['nome'] ?>">
+          <input class="d-none input-destino" type="text" name="nome" value="administrador">
+                
+          <input type="text" name="mensagem" class="form-control input-conversa m-0 pl-3 col-8" placeholder="mensagem">
+          <input class="col-3 input-enviar " type="submit" value="Enviar">
+        </form>
+        <input type="text" name="mensagem" class="form-control input-conversa-bot m-0 pl-3 col-8" placeholder="mensagem">
+        <input class="col-3 input-enviar-bot " type="submit" value="Enviar">
+      </div>
+    </div>
+  </div>
+</div>

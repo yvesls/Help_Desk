@@ -1,3 +1,0 @@
-LoginAdmin: user@teste.com.br
-SenhaAdmin: adminadmin
-

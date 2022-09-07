@@ -13,9 +13,9 @@
                           Número de Chamados Pendentes
                         </div>
                         <div class="card-body">
-                          <? foreach($this->view->numChamPen as $key=>$dados){ ?>
+                          <?php foreach($this->view->numChamPen as $key=>$dados){ ?>
                             <h5 class="card-title"><?= $dados['0']?></h5>
-                          <? break;} ?>
+                          <?php break;} ?>
                         </div>
                       </div>
                     </div>
@@ -26,9 +26,9 @@
                           Total de Chamados
                         </div>
                         <div class="card-body">
-                          <? foreach($this->view->numCham as $key=>$dados){ ?>
+                          <?php foreach($this->view->numCham as $key=>$dados){ ?>
                             <h5 class="card-title"><?= $dados?></h5>
-                          <? break;} ?>
+                          <?php break;} ?>
                         </div>
                       </div>
                     </div>
@@ -39,9 +39,9 @@
                           Total de Clientes
                         </div>
                         <div class="card-body">
-                          <? foreach($this->view->numClientes as $key=>$dados){ ?>
+                          <?php foreach($this->view->numClientes as $key=>$dados){ ?>
                             <h5 class="card-title"><?= $dados['0']?></h5>
-                          <? break;} ?>
+                          <?php break;} ?>
                         </div>
                       </div>
                     </div>
@@ -63,7 +63,7 @@
               <div class=" text-center p-0 m-0 chat-clientes">
                 <input type="button" class="col-12 m-0 py-3 nomes-chat" value="<?=$dados['nome']?>">
               </div>
-            <? } ?>
+            <?php } ?>
             
             <div class="col-12 h-100 chat-pessoal">
               <div class="conversa-nomeCliente"></div>

@@ -83,14 +83,14 @@ class Chamado extends Model {
 
 		$query = "select categoria, titulo, descricao, nome, id, data_mod, status from tb_chamados where status = 'pendente'";
 
-		return $this->db->query($query)->fetchAll();
+		return $this->db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	public function getChamadosRealizadosAdm(){
 
 		$query = "select categoria, titulo, descricao, nome, id, data_mod from tb_chamados where status = 'realizado'";
 
-		return $this->db->query($query)->fetchAll();
+		return $this->db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	public function getChamadosAdmPorNome($cliente){
@@ -102,7 +102,7 @@ class Chamado extends Model {
         $stmt->bindValue(':nome', $this->__get('nome'));
         $stmt->execute();
 
-		return $stmt->fetchAll(\PDO::FETCH_OBJ);
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	public function getChamadosAdmPorCategoria($categoria){
@@ -114,29 +114,30 @@ class Chamado extends Model {
         $stmt->bindValue(':categoria', $this->__get('categoria'));
         $stmt->execute();
 
-		return $stmt->fetchAll(\PDO::FETCH_OBJ);
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	public function verificaSeExisteEnderecoCad($nome_usuario) { // retorna os dados de vendas de vendas
 		$usuario = $this; 
+		
 		$usuario->__set('nome_usuario', $nome_usuario);
 		$query = '
 			select 
-				count(*) as nome 
+				*
 			from 
 				tb_endereco
 			where
-			nome_usuario = :nome_usuario';
+			nome = :nome_usuario';
 
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':nome_usuario', $nome_usuario);
 		$stmt->execute();
 
-		return $stmt->fetch();
+		return $stmt->fetchAll(\PDO::FETCH_OBJ);
 	}
 
 	public function salvar_endereco() {
-		$query = "insert into tb_endereco(nome_usuario, cep, endereco, bairro, cidade, UF, complemento)values(:nome_usuario, :cep, :endereco, :bairro, :cidade, :UF, :complemento)"; //  preenchendo nome email e senha
+		$query = "insert into tb_endereco(nome, cep, endereco, bairro, cidade, UF, complemento)values(:nome_usuario, :cep, :endereco, :bairro, :cidade, :UF, :complemento)"; //  preenchendo nome email e senha
 		$stmt = $this->db->prepare($query); // instanciando o pbo
 		$stmt->bindValue(':nome_usuario', $this->__get('nome'));
 		$stmt->bindValue(':cep', $this->__get('cep')); // bind (parte da inserção) substitui o atributo nome pelo get do nome passado
@@ -152,7 +153,7 @@ class Chamado extends Model {
 
 	public function consultarEnderecos(){
 
-		$query = "select nome_usuario, cep, endereco, bairro, cidade, UF, complemento from tb_endereco";
+		$query = "select nome, cep, endereco, bairro, cidade, uf, complemento from tb_endereco";
 		$stmt = $this->db->prepare($query);
         $stmt->execute();
 
@@ -199,7 +200,7 @@ class Chamado extends Model {
 			from 
 				usuarios
 			where
-			id != 9';
+			id != 1';
 
 		$stmt = $this->db->prepare($query);
 		$stmt->execute();

@@ -24,14 +24,14 @@
 		      <div class="menu-content position-fixed bg-dark">
 		            <ul class="menu-escolhas">
                     <img src="logo.png" width="80" height="80" class="d-flex justify-content-center mr-4 mb-4" alt="">
-                  <?if($_SESSION['nome'] == 'administrador') {?>
+                  <?php if($_SESSION['nome'] == 'administrador') {?>
 		                <li>
 		                  <a href="/enderecos" class="nav-link">Endereços</a>
 		                </li>
 		                <li>
 		                  <a href="/dashboard" class="nav-link">Dashboard de clientes</a>
 		                </li>
-                  <? } ?>
+                  <?php } ?>
                     <li>
 		                  <a class="nav-link" href="/sair">Sair</a>
 		                </li>

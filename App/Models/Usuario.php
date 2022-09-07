@@ -30,8 +30,8 @@ class Usuario extends Model {
 		$stmt->bindValue(':email', $this->__get('email'));
 		$stmt->bindValue(':senha', $this->__get('senha')); //md5() -> hash 32 caracteres (criptografia da senha)
 		$stmt->execute(); // executa o pdo stmt
-
-		return $this;
+		print_r($this);
+		return $this; 
 	}
 
 	//validar se um cadastro pode ser feito
@@ -67,7 +67,7 @@ class Usuario extends Model {
 	public function getClientes(){
 		$query = "select nome from usuarios where nome != 'Administrador'";
 
-		return $this->db->query($query)->fetchAll();
+		return $this->db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	// método que verifica se existe o login passado na index
@@ -81,8 +81,9 @@ class Usuario extends Model {
 
 		
 		$usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
-		if($usuario['email'] == 'user@teste.com.br' && $usuario['senha'] == 'adminadmin'){
-			$this->__set('senha', 'adminadmin');
+		print_r($usuario);
+		if($usuario['email'] == 'user@teste.com.br' && $usuario['senha'] == 'admadm'){
+			$this->__set('senha', 'admadm');
 		}
 		// retorna id e nome para manipulação pela session
 		if($usuario['id'] != '' && $usuario['nome'] != '') {

@@ -13,6 +13,16 @@
     font-family: roboto;
 }
 
+.botConversa {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    padding: 10px 10px;
+    background-color: #eeeeee;
+    border-radius: 10px;
+    margin: 5px 5px;
+}
+
 body {
     scroll-behavior: smooth;
     overflow-x: hidden;

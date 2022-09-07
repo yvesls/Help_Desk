@@ -48,8 +48,8 @@
     
                     $usuario->salvar(); // salva o usuario
     
-                    $this->render('cadastro', 'layout1'); // renderiza uma view que apresenta a mensagem de sucesso
-    
+                    $this->render('cadastro', 'layout_into'); // renderiza uma view que apresenta a mensagem de sucesso
+                    
             } else { // caso haja um erro
     
                 $this->view->usuario = array( // recarregando os dados em increver-se para o usuário não precisar digitar novamente

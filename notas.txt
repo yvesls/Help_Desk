@@ -1,0 +1,9 @@
+Versão do XAMPP/PHP utilizado: 7.4.29 -> https://www.apachefriends.org/pt_br/download.html
+LoginAdmin: user@teste.com.br
+SenhaAdmin: admadm
+
+1- Criar o sql aqui para quando for subir o aplicativo, estar tudo pronto.
+2- Melhorar a navegação do aplicativo. 
+3- Arrumar um jeito de proteger os dados que passam pelo script.
+4- Repartir e melhorar o script.
+5- Subir o aplicativo para a nuvem (de preferência pelo heroku).

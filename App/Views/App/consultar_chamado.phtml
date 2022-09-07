@@ -18,19 +18,19 @@
                   <h5 class="card-title"><?= $dados['titulo'] ?></h5>
                   <h6 class="card-subtitle mb-2 text-muted"><?= $dados['categoria'] ?></h6>
                   <p class="card-text"><?= $dados['descricao'] ?></p>
-                  <? if($dados['status'] == 'realizado') { ?>
+                  <?php if($dados['status'] == 'realizado') { ?>
                     <small class="ml-0 pl-0 card-text text-success col-12"><?= $dados['status'] ?><small class="font-italic float-right text-dark mr-0 pr-0"><?= $dados['data_mod'] ?></small></small>
-                  <? } else {?>
+                  <?php } else {?>
                     <small class="ml-0 pl-0 card-text text-danger col-12"><?= $dados['status'] ?><small class="font-italic float-right text-dark mr-0 pr-0"><?= $dados['data_mod'] ?></small></small>
-                  <? } ?>
+                  <?php } ?>
                 </div>
               </div>
-              <? } ?>
-              <? }else{ ?>
+              <?php } ?>
+              <?php }else{ ?>
                 <div class="py-5 text-center d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao">
                   <h2>Você não realizou pedidos ainda.</h2>
                 </div>
-              <? } ?>
+              <?php } ?>
               <div class="row mt-5">
                 <div class="col-6">
                   <a class="btn btn-lg btn-warning btn-block" href="/home">Voltar</a>
@@ -40,10 +40,8 @@
           </div>
         </div>
         <div class="col-6 col-md-4 col-xl-3 comunicacao">
-          <?php foreach($this->view->adm as $key=>$dados){ ?>
-            <input class="col-1 btn-chat-cliente btn" value="administrador"/>
-            <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
-          <? } ?>
+          <input class="col-1 btn-chat-cliente btn" value="administrador"/>
+          <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
 
           <div class="chat bg-light rounded">
             <div class="bg-light text-center menu-chat">

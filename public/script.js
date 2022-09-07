@@ -54,7 +54,7 @@ $(document).ready(() => {
                     }
 
                     dados.forEach(element => {
-                        $('.clienteAtual').prepend('<div class="card mb-3 bg-light peloNome position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
+                        $('.clienteAtual').prepend('<div class="card mb-3 bg-light peloNome position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative w-100"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status float-left btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
                     });
                 }else {
                     $('.todosClientes').css('display', 'block');
@@ -236,13 +236,13 @@ $(document).ready(() => {
                             let piada = piadas[idx]
                             
                             let msgAuto = document.createElement('div');
-                            $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 0').css('background-color', '#18A2B8').css('color', 'white').css('margin', '5px 5px');
+                            $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 0').css('background-color', ' #eeeeee').css('margin', '5px 5px');
                             $(msgAuto).html(piada.piada);
                             $(areaMsgAuto).prepend(msgAuto);
 
                             setTimeout(() => {
                                 let msgAuto = document.createElement('div');
-                                $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 0').css('background-color', '#18A2B8').css('color', 'white').css('margin', '5px 5px');
+                                $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 0').css('background-color', ' #eeeeee').css('margin', '5px 5px');
                                 $(msgAuto).html(piada.resposta + '<br> kkkkkkkkk muito boa né!');
                                 $(areaMsgAuto).prepend(msgAuto);
                                 return true
@@ -271,7 +271,7 @@ $(document).ready(() => {
             let interacao = conversa.next(resposta)
             $('.input-conversa-bot').val('');
             let msgAuto = document.createElement('div');
-            $(msgAuto).css('width', 'auto').css('display', 'flex').css('justify-content', 'center').css('padding', '10px 10px').css('background-color', '#18A2B8').css('color', 'white').css('margin', '5px 5px');
+            $(msgAuto).addClass('botConversa');
             
             if(interacao.value != ''){
                 $(msgAuto).html(interacao.value);
@@ -299,31 +299,34 @@ $(document).ready(() => {
         $('.input-conversa').css('display', 'block');
     }
     $(".input-enviar").on("click", (e)=>{
+        
         e.preventDefault();
         let mensagem = $('.input-conversa').val();
         let nome = $('.input-nome').val();     
         let destinatario = $('.input-destino').val();
+        if(mensagem){
+            let concatenaMensagem = nome+'Er32'+destinatario+'Er32'+mensagem;
+            
+            $.ajax({ // realiza uma requisição para o servidor
+                // busca no servidor por via get
+                type: 'POST', 
+                // url da página que interage com o servidor
+                url: '/comunicacao',
+                // envia os dados que serão parametros para busca no servidor (neste caso a data)
+                data: 'msg=' + concatenaMensagem, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+                dataType: 'text',// modifica o tipo de retorno (padrao html)
+                success: dados => {
+                        
+                }, // mostra os dados de erro do back
+                error: function ( status, error)  {
+                    alert('Deu erro na recuperação dos dados');
+                    console.log(arguments);
+                    console.log(status);
+                    console.log(error.message);
+                }
+            }); 
+        }
         
-        let concatenaMensagem = nome+'Er32'+destinatario+'Er32'+mensagem;
-    
-        $.ajax({ // realiza uma requisição para o servidor
-            // busca no servidor por via get
-            type: 'POST', 
-            // url da página que interage com o servidor
-            url: '/comunicacao',
-            // envia os dados que serão parametros para busca no servidor (neste caso a data)
-            data: 'msg=' + concatenaMensagem, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
-            dataType: 'text',// modifica o tipo de retorno (padrao html)
-            success: dados => {
-                    
-            }, // mostra os dados de erro do back
-            error: function ( status, error)  {
-                alert('Deu erro na recuperação dos dados');
-                console.log(arguments);
-                console.log(status);
-                console.log(error.message);
-            }
-        }); 
     }); 
 
     $(".chat-pessoal").css('display', 'none');
@@ -528,16 +531,23 @@ $(document).ready(() => {
 
     // fim -- configurações dos chats --
     // inicio -- configurações de envio -- abrir chamado --
-    $('#complemento').blur(function(){
-        if($('#titulo').val() != '' && $('#categoria_chamado').val() != 'Tipo de problema' && $('#descricao').val() != '' && $('#CEP').val() != '' && $('#endereco').val() != '' && $('#bairro').val() != '' && $('#cidade').val() != '' && $('#uf').val() != '' && $('#complemento').val() != ''){
-             $('.btn-abrir').removeAttr('disabled');
-             $('.preencher-corretamente-aviso').html('');
-        }else {
-            $('.btn-abrir').attr('disabled', true);
-            $('.preencher-corretamente-aviso').html('Para liberar o botão, preencha os campos.');
-        }
-    }); // fim -- configurações de envio -- abrir chamado --
-    
+    if($('#temEndereco').html()){
+        $('#complemento').blur(function(){
+            
+            if($('#titulo').val() != '' && $('#categoria_chamado').val() != 'Tipo de problema' && $('#descricao').val() != '' && $('#CEP').val() != '' && $('#endereco').val() != '' && $('#bairro').val() != '' && $('#cidade').val() != '' && $('#uf').val() != '' && $('#complemento').val() != ''){
+                $('.btn-abrir').removeAttr('disabled');
+                $('.preencher-corretamente-aviso').html('');
+            }
+        }); // fim -- configurações de envio -- abrir chamado --
+    }else{
+        $('#descricao').blur(function(){
+            if($('#titulo').val() != '' && $('#categoria_chamado').val() != 'Tipo de problema' && $('#descricao').val() != ''){
+                $('.btn-abrir').removeAttr('disabled');
+                $('.preencher-corretamente-aviso').html('');
+            }
+        })
+    }$('.preencher-corretamente-aviso').html('Para liberar o botão, preencha os campos.');
+
     // inicio -- menu burguer -- 
     $('.menu-hamburguer').on('click', function(){
         $('.menu-content').css('right', '0');
