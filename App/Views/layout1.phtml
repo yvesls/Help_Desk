@@ -25,6 +25,9 @@
 		            <ul class="menu-escolhas">
                     <img src="logo.png" width="80" height="80" class="d-flex justify-content-center mr-4 mb-4" alt="">
                   <?php if($_SESSION['nome'] == 'administrador') {?>
+                    <li>
+		                  <a href="/consultar_chamado_adm" class="nav-link">Chamados</a>
+		                </li>
 		                <li>
 		                  <a href="/enderecos" class="nav-link">Endereços</a>
 		                </li>
@@ -42,7 +45,72 @@
     
     <?= $this->content() ?>
 
-    
+    <?php if($_SESSION['senha'] == "admadm"){ ?>
+
+      <div class="col-6 col-md-4 col-xl-3 comunicacao">
+        <a class="col-1 btn-chat"><img src="../icons8-suporte-on-line-96.png" class="mx-auto" alt="chat com o suporte" width="50px" height="50px"></a>
+            
+        <div class="chat bg-light rounded">
+          <div class="bg-light text-center menu-chat">
+            <small class="text-info">Chat</small>
+            <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
+          </div>
+
+          <?php foreach($this->view->clientes as $key => $dados) { ?>
+            <div class=" text-center p-0 m-0 chat-clientes">
+              <input type="button" class="col-12 m-0 py-3 nomes-chat" value="<?= $dados['nome']?>">
+            </div>
+          <?php } ?>
+              
+          <div class="col-12 h-100 chat-pessoal">
+            <div class="conversa-nomeCliente"></div>
+            <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
+            <div class="conversa m-0">
+
+            </div>
+            <form>
+              <input class="d-none input-nome" type="text" name="nome" value="administrador">
+              <input class="d-none input-destino" type="text" name="nome" value="">
+              <input type="text" name="mensagem" class="form-control input-conversa m-0 pl-3 col-8" placeholder="mensagem">
+              <input class="col-3 input-enviar" type="submit" value="Enviar">
+            </form>
+                
+          </div>
+        </div>
+      </div>
+
+    <?php }else { ?>
+
+      <div class="col-6 col-md-4 col-xl-3 comunicacao">
+        <input class="col-1 btn-chat-cliente btn" value="administrador"/>
+        <img src="../icons8-suporte-on-line-96.png" width="50px" heigth="50px" class="img-chat">
+
+        <div class="chat bg-light rounded">
+          <div class="bg-light text-center menu-chat">
+            <small class="text-info">Chat</small>
+            <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
+          </div>
+            
+          <div class="col-12 h-100 chat-pessoal">
+            <div class="conversa-nomeCliente"></div>
+            <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
+            <div class="conversa m-0">
+
+            </div>
+            <form>
+		          <input class="d-none input-nome" type="text" name="nome" value="<?= $_SESSION['nome'] ?>">
+              <input class="d-none input-destino" type="text" name="nome" value="administrador">
+                
+              <input type="text" name="mensagem" class="form-control input-conversa m-0 pl-3 col-8" placeholder="mensagem">
+              <input class="col-3 input-enviar " type="submit" value="Enviar">
+            </form>
+            <input type="text" name="mensagem" class="form-control input-conversa-bot m-0 pl-3 col-8" placeholder="mensagem">
+            <input class="col-3 input-enviar-bot " type="submit" value="Enviar">
+          </div>
+        </div>
+      </div>
+      
+    <?php } ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

@@ -30,7 +30,7 @@ class Usuario extends Model {
 		$stmt->bindValue(':email', $this->__get('email'));
 		$stmt->bindValue(':senha', $this->__get('senha')); //md5() -> hash 32 caracteres (criptografia da senha)
 		$stmt->execute(); // executa o pdo stmt
-		print_r($this);
+		
 		return $this; 
 	}
 
@@ -81,7 +81,6 @@ class Usuario extends Model {
 
 		
 		$usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
-		print_r($usuario);
 		if($usuario['email'] == 'user@teste.com.br' && $usuario['senha'] == 'admadm'){
 			$this->__set('senha', 'admadm');
 		}

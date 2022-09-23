@@ -39,12 +39,6 @@
                 'action' => 'home'
             );
 
-            $routes['adm'] = array(
-                'route' => '/adm',
-                'controller' => 'AppController',
-                'action' => 'adm'
-            );
-
             $routes['abrir_chamado'] = array(
                 'route' => '/abrir_chamado',
                 'controller' => 'AppController',

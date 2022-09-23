@@ -25,151 +25,18 @@ $(document).ready(() => {
         $('.popoverClass').remove();
     });
     // fim -- configurações dos popovers (nas imagens até o momento) -- 
+    
     // inicio configurações das chamadas ----------------------------------------------------------------------------------------------------------------------------------------
-    $('.clienteAtual').css('display', 'none'); // esconde a aba do cliente atual
-    $('.categoriaAtual').css('display', 'none');
-    // selecionando chamados por nome
-    $('#nome').on('change', (e)=> {
-        let cliente = $(e.target).val();
-        $('.peloNome').remove();       
-
-        $.ajax({ // realiza uma requisição para o servidor
-            // busca no servidor por via get
-            type: 'POST', 
-            // url da página que interage com o servidor
-            url: '/consultar_cliente_adm',
-            // envia os dados que serão parametros para busca no servidor (neste caso a data)
-            data: 'nome=' + cliente, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
-            dataType: 'json',// modifica o tipo de retorno (padrao html)
-            success: dados => {
-                // retorna os dados objtidos a partir do parametro enviado  
-                if(cliente != 'Clientes') {
-                    $('.todosClientes').css('display', 'none'); 
-                    $('.clienteAtual').css('display', 'block');
-                    $('.categoriaAtual').css('display', 'none');
-                    $('#categoria').val('Categorias');
-
-                    if(dados == ""){
-                        $('.clienteAtual').prepend('<div class="pt-5 d-flex peloNome align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Este cliente não possui pedidos.</h2></div>')
-                    }
-
-                    dados.forEach(element => {
-                        $('.clienteAtual').prepend('<div class="card mb-3 bg-light peloNome position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative w-100"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status float-left btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
-                    });
-                }else {
-                    $('.todosClientes').css('display', 'block');
-                    $('.clienteAtual').css('display', 'none');
-                    $('.categoriaAtual').css('display', 'none');
-                }
-                
-            }, // mostra os dados de erro do back
-            error: function ( status, error)  {
-                alert('Deu erro na recuperação dos dados');
-                console.log(arguments);
-                console.log(status);
-                console.log(error.message);
-            }
-        });      
-        // metodo, url, dados, sucesso, erro, etc (ele realiza. Informações basicas)
-    });
-    // selecionando os chamados pela categoria
-    $('#categoria').on('change', (e)=> {
-        let categoria = $(e.target).val();
-        $('.pelaCategoria').remove();
-
-        $.ajax({ // realiza uma requisição para o servidor
-            // busca no servidor por via get
-            type: 'POST', 
-            // url da página que interage com o servidor
-            url: '/consultar_categoria_adm',
-            // envia os dados que serão parametros para busca no servidor (neste caso a data)
-            data: 'categoria=' + categoria, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
-            dataType: 'json',// modifica o tipo de retorno (padrao html)
-            success: dados => {
-                // retorna os dados objtidos a partir do parametro enviado  
-                if(categoria != 'Categorias') {
-                    $('#nome').val('Clientes');
-                    $('.categoriaAtual').css('display', 'block');
-                    $('.todosClientes').css('display', 'none');
-                    $('.clienteAtual').css('display', 'none');
-
-                    if(dados == ""){
-                        $('.categoriaAtual').prepend('<div class="pt-5 d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Esta categoria não possui pedidos.</h2></div>')
-                    }
-
-                    dados.forEach(element => {
-                        // inserindo chamado no final da lista
-                        $('.categoriaAtual').prepend('<div class="card mb-3 bg-light pelaCategoria  position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm">' + element.nome + '</p><div class="float-left pt-0 mt-0 position-relative relative-card-adm col-12"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
-                        var ids = [];
-                        ids = element.id;
-                        console.log(ids);
-                        // alterando status quando concluído
-                        $(".status").on("click", (e)=>{
-                            e.preventDefault(); // impedir o evento submit
-                            
-                            let status_inteiro = $(e.target).val();
-                            let id = status_inteiro.slice(9); // recuperando id passado junto com status
-                            let status = status_inteiro.slice(0,9) // recortando apenas a parte do status (por ter tamanho unico, slice funciona)
-                            
-                            let bloco = $(e.target).closest('.card');
-                    
-                            console.log(bloco)
-                            
-                            $.ajax({ // realiza uma requisição para o servidor
-                                // busca no servidor por via get
-                                type: 'POST', 
-                                // url da página que interage com o servidor
-                                url: '/alterar_status_adm',
-                                // envia os dados que serão parametros para busca no servidor (neste caso a data)
-                                data: 'id=' + id, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
-                                dataType: 'text',// modifica o tipo de retorno (padrao html)
-                                success: dados => {
-                                    // se for sucesso ele remove a tag
-                                    $(bloco).addClass('animate__fadeOut');
-                    
-                                    window.setTimeout(realizaAnimacao, 1000);
-                                    function realizaAnimacao(){
-                                        $(bloco).remove(); // ao invés de display none, usar remove()
-                                    }
-                                    console.log(dados);
-                                }, // mostra os dados de erro do back
-                                error: function ( status, error)  {
-                                    alert('Deu erro na recuperação dos dados');
-                                    console.log(arguments);
-                                    console.log(status);
-                                    console.log(error.message);
-                                }
-                            }); 
-                        });
-
-                        
-                    });
-                    
-                }else {
-                    $('.categoriaAtual').css('display', 'none');
-                    $('.todosClientes').css('display', 'block');
-                }
-                
-            }, // mostra os dados de erro do back
-            error: function ( status, error)  {
-                alert('Deu erro na recuperação dos dados');
-                console.log(arguments);
-                console.log(status);
-                console.log(error.message);
-            }
-        }); 
-    });
-    // selecionando os chamados por status
-    $(".status").on("click", (e)=>{
+   
+    // modificar status do chamado (consultar chamados adm - botão "confirmar")
+   function modificaStatus(e){
         e.preventDefault(); // impedir o evento submit
         
         let status_inteiro = $(e.target).val();
         let id = status_inteiro.slice(9); // recuperando id passado junto com status
-        let status = status_inteiro.slice(0,9) // recortando apenas a parte do status (por ter tamanho unico, slice funciona)
-        
         let bloco = $(e.target).closest('.card');
 
-        console.log(bloco)
+        //console.log(bloco)
         
         $.ajax({ // realiza uma requisição para o servidor
             // busca no servidor por via get
@@ -196,7 +63,112 @@ $(document).ready(() => {
                 console.log(error.message);
             }
         }); 
+        // verifica se possui algum chamado ainda (caso não exista, exibe a mensagem)
+        let filhosCliente = $('.clienteAtual').children();
+        if(filhosCliente.length-1 < 1){
+            $('.clienteAtual').html('<div class="py-5 text-center d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>O cliente não possui mais chamados no momento.</h2></div>')
+        }
 
+        // verifica se possui algum chamado ainda (caso não exista, exibe a mensagem)
+        let filhosCategoria = $('.categoriaAtual').children();
+        if(filhosCategoria.length-1 < 1){
+            $('.categoriaAtual').html('<div class="py-5 text-center d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Não possui nenhum chamado desta categoria no momento.</h2></div>')
+        }
+    } $(".status").on("click", modificaStatus);
+
+   // utilizados no "consultar chamado adm"
+    $('.clienteAtual').css('display', 'none'); // esconde a exibição da busca por cliente atual -> consultar chamado adm 
+    
+    // selecionando chamados por nome
+    $('#nome').on('change', (e)=> {
+        let cliente = $(e.target).val();
+        $('.peloNome').remove();       
+        // realizando uma requisição a partir do nome selecionado
+        $.ajax({
+            type: 'POST', 
+            url: '/consultar_cliente_adm',
+            data: 'nome=' + cliente, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+            dataType: 'json',// modifica o tipo de retorno (padrao html)
+            success: dados => {
+                if(cliente != 'Clientes') {
+                    $('.todosClientes').css('display', 'none'); 
+                    $('.clienteAtual').css('display', 'block');
+                    $('.categoriaAtual').css('display', 'none');
+                    $('#categoria').val('Categorias');
+
+                    if(dados == ""){
+                        $('.clienteAtual').prepend('<div class="pt-5 d-flex peloNome align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Este cliente não chamados pedidos no momento.</h2></div>')
+                    }
+
+                    dados.forEach(element => {
+                        $('.clienteAtual').prepend('<div class="card mb-3 bg-light peloNome position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><div class="float-left pt-0 mt-0 position-relative w-100"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status float-left btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
+                    });
+                }else {
+                    $('.todosClientes').css('display', 'block');
+                    $('.clienteAtual').css('display', 'none');
+                    $('.categoriaAtual').css('display', 'none');
+                }
+
+                // permite chamar a função que modifica o status 
+                $(".status").on("click", modificaStatus);
+
+                
+
+            }, // mostra os dados de erro do back
+            error: function ( status, error)  {
+                alert('Deu erro na recuperação dos dados');
+                console.log(arguments);
+                console.log(status);
+                console.log(error.message);
+            }
+        });      
+    });
+
+    // utilizados no "consultar chamado adm"
+
+    $('.categoriaAtual').css('display', 'none'); // esconde a exibição da busca por categoria atual -> consultar chamado adm 
+
+    // selecionando os chamados pela categoria
+    $('#categoria').on('change', (e)=> {
+        let categoria = $(e.target).val();
+        $('.pelaCategoria').remove();
+        // realizando uma requisição a partir da categoria selecionada
+        $.ajax({ 
+            type: 'POST', 
+            url: '/consultar_categoria_adm',
+            data: 'categoria=' + categoria, // x-ww-form-urlencoded - sintaxe usada, formato urlencoded passa quantos valores quanto necessário (&parametro=valor)
+            dataType: 'json',// modifica o tipo de retorno (padrao html)
+            success: dados => {
+                if(categoria != 'Categorias') {
+                    $('#nome').val('Clientes');
+                    $('.categoriaAtual').css('display', 'block');
+                    $('.todosClientes').css('display', 'none');
+                    $('.clienteAtual').css('display', 'none');
+
+                    if(dados == ""){
+                        $('.categoriaAtual').prepend('<div class="pt-5 d-flex pelaCategoria align-content-center justify-content-center position-relative animate__animated animate__fadeIn animate_duracao"><h2>Esta categoria não possui chamados no momento.</h2></div>')
+                    }
+
+                    dados.forEach(element => {
+                        // inserindo chamado no final da lista
+                        $('.categoriaAtual').prepend('<div class="card mb-3 bg-light pelaCategoria  position-relative animate__animated animate__fadeIn animate_duracao"><div class="card-body"><p class="card-subtitle font-italic float-right position-relative p-0 m-0 relative-name-adm">' + element.nome + '</p><div class="float-left pt-0 mt-0 position-relative relative-card-adm col-12"><h5 class="card-title">'+ element.titulo +'</h5><h5 class="card-subtitle mb-2 text-muted">'+ element.categoria +'</h6><p class="card-text">'+ element.descricao +'</p><form><div class="form-check m-0 p-0"><label class="status-font" for="status">Marcar como concluído:</label><br><span><button type="button" value="realizado'+element.id+'" name="status" class="status btn btn-info btn-sm">confirmar</button><small class="font-italic float-right text-dark mr-0 pr-0">'+element.data_mod+'</small></span></div></form></div></div></div>');
+                        var ids = [];
+                        ids = element.id;
+                        console.log(ids);
+                        $(".status").on("click", modificaStatus);
+                    });
+                }else { // caso a categoria selecionada seja "categorias", os chamados exibidos são de todos os clientes
+                    $('.categoriaAtual').css('display', 'none');
+                    $('.todosClientes').css('display', 'block');
+                }
+            }, // mostra os dados de erro do back
+            error: function ( status, error)  {
+                alert('Deu erro na recuperação dos dados');
+                console.log(arguments);
+                console.log(status);
+                console.log(error.message);
+            }
+        }); 
     });
     
     // animação das chamadas -- realizadas e pendentes --
@@ -207,6 +179,9 @@ $(document).ready(() => {
         rotate: {x:0, y:80, z:0}
     });
     // fim -- configurações das chamadas -- 
+    
+    
+    
     // inicio das configurações do chat ---------------------------------------------------------------------------------------------------------------------------------
     
     // envia mensagem para o banco de dados
@@ -256,7 +231,7 @@ $(document).ready(() => {
                     
             } else {
     
-                opcao = yield '   Nosso site é responsável por facilitar a solicitação de conserto do seu dispositivo <br>(computador, celular, impressora, tablet, notbook, etc).<br>    Nele você realiza um chamado, que é uma solicitação de manutenção. Na aba <br> "abrir chamado", onde, ao preencher os campos, o chamado será arquivado <br>e o nosso técnico irá agendar a busca por esse canal assim que possível. <br>Qualquer dúvida é tirada por aqui. Atendemos a domicílio e o pagamento pode <br>ser combinado aqui mas só será realizado pessoalmente (para sua segurança). <br> <br> Digite 1 para sair.'
+                opcao = yield 'Nosso site é responsável por facilitar a solicitação de conserto do seu dispositivo <br>(computador, celular, impressora, tablet, notbook, etc).<br>    Nele, você realiza um chamado, que é uma solicitação de manutenção. Na aba <br> "abrir chamado", onde, ao preencher os campos, o chamado será arquivado <br>e o nosso técnico irá agendar a busca por esse canal assim que possível. <br>Qualquer dúvida é tirada por aqui. Atendemos a domicílio e o pagamento pode <br>ser combinado aqui mas só será realizado pessoalmente. <br> <br> Digite 1 para sair.'
                     
             }
             if(opcao != '1'){
@@ -298,6 +273,7 @@ $(document).ready(() => {
         $('.input-enviar').css('display', 'block');
         $('.input-conversa').css('display', 'block');
     }
+
     $(".input-enviar").on("click", (e)=>{
         
         e.preventDefault();
@@ -334,7 +310,7 @@ $(document).ready(() => {
     let cont = 1;
     
     // manda mensagem
-       // chama a função ajax que recupera os dados da comunicação a cada 200 milésimos de segundo -- chat --  
+    // chama a função ajax que recupera os dados da comunicação a cada 200 milésimos de segundo -- chat --  
     $(".nomes-chat").on("click", ()=>{
         const chamaAjax = setInterval(timeAjax, 200);
         function timeAjax(){ajax()};
@@ -530,7 +506,7 @@ $(document).ready(() => {
     }
 
     // fim -- configurações dos chats --
-    // inicio -- configurações de envio -- abrir chamado --
+    // inicio -- configurações de envio -- abrir chamado ------------------------------------------------------------------------------------
     if($('#temEndereco').html()){
         $('#complemento').blur(function(){
             
@@ -579,6 +555,7 @@ $(document).ready(() => {
 });
 
 // inicio -- endereço do cliente -- abrir-chamado -------------------------------------------------------------------------------------------------------
+
 function getDadosEnderecoPorCEP(cep) {
     let url = 'https://viacep.com.br/ws/'+cep+'/json/'
     let xmlHttp = new XMLHttpRequest()

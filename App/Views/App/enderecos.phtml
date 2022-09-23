@@ -35,35 +35,4 @@
             </div> 
           </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-3 comunicacao">
-          <a class="col-1 btn-chat"><img src="../icons8-suporte-on-line-96.png" class="mx-auto" alt="chat com o suporte" width="50px" height="50px"></a>
-          
-          <div class="chat bg-light rounded">
-            <div class="bg-light text-center menu-chat">
-              <small class="text-info">Chat</small>
-              <i class="fas fa-times fa-x1 fecha-chat text-right"></i>
-            </div>
-            
-            <?php foreach($this->view->clientes as $key=>$dados){ ?>
-              <div class=" text-center p-0 m-0 chat-clientes">
-                <input type="button" class="col-12 m-0 py-3 nomes-chat" value="<?=$dados['nome']?>">
-              </div>
-            <?php } ?>
-            
-            <div class="col-12 h-100 chat-pessoal">
-              <div class="conversa-nomeCliente"></div>
-              <i class="fas fa-times fa-x1 fecha-conversa rounded text-right"></i>
-              <div class="conversa m-0">
-
-              </div>
-              <form>
-		            <input class="d-none input-nome" type="text" name="nome" value="administrador">
-                <input class="d-none input-destino" type="text" name="nome" value="">
-                <input type="text" name="mensagem" class="form-control input-conversa m-0 pl-3 col-8" placeholder="mensagem">
-                <input class="col-3 input-enviar " type="submit" value="Enviar">
-              </form>
-              
-            </div>
-          </div>
-        </div>
   </div>

@@ -13,19 +13,29 @@ class AppController extends Action {
 	public function home() {
 
 		$this->validaAutenticacao();
-		// Dados CHamados
-		// $conexaoChamado = Container::getModel('Chamado');	
-		// $dados = $conexaoChamado->getChamados();
-		// $this->view->dadosChamado = $dados;
+		// chat
+		$conexaoClientes = Container::getModel('Usuario');
+		$clientes = $conexaoClientes->getClientes();
+		$this->view->clientes = $clientes;
 		
-		// Chat
-		$conexaoChamado = Container::getModel('Chamado');
-		$dados = $conexaoChamado->getAdm();
-
 		if($_SESSION['senha'] == "admadm"){
-			$this->view->adm = $dados;
-			$this->view->nome = $_SESSION['nome'];
-			$this->render('adm', 'layout1');
+
+			$conexaoChamado = Container::getModel('Chamado');
+		
+			$dados = $conexaoChamado->getChamadosAdm();
+			
+			$this->view->dadosChamado = $dados;
+
+			// echo '<br>';
+			// echo '<br>';
+			// echo '<br>';
+			// echo '<pre>';
+			// print_r($dados);
+			// echo '</pre>';
+
+			
+
+			$this->render('consultar_chamado_adm', 'layout1');
 		} else {
 			$this->view->nome = $_SESSION['nome'];
 			// protege a rota ( procurando se os dados foram preenchidos no processo de autenticação).
@@ -138,26 +148,17 @@ class AppController extends Action {
 		$dados = $conexaoChamado->getChamadosAdm();
 		
 		$this->view->dadosChamado = $dados;
-		// echo '<br>';
-		// echo '<br>';
+
 		// echo '<br>';
 		// echo '<br>';
 		// echo '<br>';
 		// echo '<pre>';
 		// print_r($dados);
 		// echo '</pre>';
-		// resgata os nomes na busca por nomes
-		$conexaoClientes = Container::getModel('Usuario');
 
+		// chat
+		$conexaoClientes = Container::getModel('Usuario');
 		$clientes = $conexaoClientes->getClientes();
-		// echo '<br>';
-		// echo '<br>';
-		// echo '<br>';
-		// echo '<br>';
-		// echo '<br>';
-		// echo '<pre>';
-		// print_r($clientes[0]);
-		// echo '</pre>';
 		$this->view->clientes = $clientes;
 
 		$this->render('consultar_chamado_adm', 'layout1');
@@ -181,10 +182,9 @@ class AppController extends Action {
 		// print_r($dados);
 		// echo '</pre>';
 
+		// chat
 		$conexaoClientes = Container::getModel('Usuario');
-
 		$clientes = $conexaoClientes->getClientes();
-
 		$this->view->clientes = $clientes;
 		
 		$this->render('enderecos', 'layout1');
@@ -204,10 +204,9 @@ class AppController extends Action {
 		$this->view->numCham = $numCham;
 		$this->view->numClientes = $numClientes;
 
+		// chat
 		$conexaoClientes = Container::getModel('Usuario');
-
 		$clientes = $conexaoClientes->getClientes();
-
 		$this->view->clientes = $clientes;
 		
 		$this->render('dashboard', 'layout1');
@@ -221,6 +220,11 @@ class AppController extends Action {
 		
 		$dados = $conexaoChamado->getChamadosRealizadosAdm();
 		$this->view->dadosChamado = $dados;
+
+		// chat
+		$conexaoClientes = Container::getModel('Usuario');
+		$clientes = $conexaoClientes->getClientes();
+		$this->view->clientes = $clientes;
 
 		$this->render('consultar_chamados_realizados_adm', 'layout1');
 	}
